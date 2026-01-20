@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -14,106 +13,102 @@
   <div class="container">
     <h1 class="title">🎴 لعبة الأسئلة</h1>
 
-```
-<!-- Coin Flip Screen -->
-<div id="coinFlip" class="coin-flip-container">
-  <div class="flip-card">
-    <h2 class="flip-title">من يبدأ؟ 🪙</h2>
-    
-    <div class="players-input">
-      <div class="player-input-group">
-        <label>اللاعب الأول</label>
-        <input type="text" id="player1" placeholder="اكتب اسمك..." maxlength="15">
-        <div class="choice-buttons">
-          <button class="choice-btn" data-player="1" data-choice="راس" onclick="selectChoice(1, 'راس')">
-            <span class="coin-emoji">👑</span>
-            <span>راس</span>
-          </button>
-          <button class="choice-btn" data-player="1" data-choice="ذيل" onclick="selectChoice(1, 'ذيل')">
-            <span class="coin-emoji">⭐</span>
-            <span>ذيل</span>
-          </button>
-        </div>
-      </div>
+    <!-- Coin Flip Screen -->
+    <div id="coinFlip" class="coin-flip-container">
+      <div class="flip-card">
+        <h2 class="flip-title">من يبدأ؟ 🪙</h2>
+        
+        <div class="players-input">
+          <div class="player-input-group">
+            <label>اللاعب الأول</label>
+            <input type="text" id="player1" placeholder="اكتب اسمك..." maxlength="15">
+            <div class="choice-buttons">
+              <button class="choice-btn" data-player="1" data-choice="راس" onclick="selectChoice(1, 'راس')">
+                <span class="coin-emoji">👑</span>
+                <span>راس</span>
+              </button>
+              <button class="choice-btn" data-player="1" data-choice="ذيل" onclick="selectChoice(1, 'ذيل')">
+                <span class="coin-emoji">⭐</span>
+                <span>ذيل</span>
+              </button>
+            </div>
+          </div>
 
-      <div class="vs-divider">VS</div>
+          <div class="vs-divider">VS</div>
 
-      <div class="player-input-group">
-        <label>اللاعب الثاني</label>
-        <input type="text" id="player2" placeholder="اكتب اسمك..." maxlength="15">
-        <div class="choice-buttons">
-          <button class="choice-btn" data-player="2" data-choice="راس" onclick="selectChoice(2, 'راس')">
-            <span class="coin-emoji">👑</span>
-            <span>راس</span>
-          </button>
-          <button class="choice-btn" data-player="2" data-choice="ذيل" onclick="selectChoice(2, 'ذيل')">
-            <span class="coin-emoji">⭐</span>
-            <span>ذيل</span>
-          </button>
+          <div class="player-input-group">
+            <label>اللاعب الثاني</label>
+            <input type="text" id="player2" placeholder="اكتب اسمك..." maxlength="15">
+            <div class="choice-buttons">
+              <button class="choice-btn" data-player="2" data-choice="راس" onclick="selectChoice(2, 'راس')">
+                <span class="coin-emoji">👑</span>
+                <span>راس</span>
+              </button>
+              <button class="choice-btn" data-player="2" data-choice="ذيل" onclick="selectChoice(2, 'ذيل')">
+                <span class="coin-emoji">⭐</span>
+                <span>ذيل</span>
+              </button>
+            </div>
+          </div>
         </div>
+
+        <button id="flipBtn" class="flip-btn" onclick="flipCoin()" disabled>
+          🪙 ارمي العملة
+        </button>
+
+        <div id="coinAnimation" class="coin-animation hidden">
+          <div class="coin">
+            <div class="coin-side heads">👑</div>
+            <div class="coin-side tails">⭐</div>
+          </div>
+        </div>
+
+        <div id="result" class="result-text hidden"></div>
       </div>
     </div>
 
-    <button id="flipBtn" class="flip-btn" onclick="flipCoin()" disabled>
-      🪙 ارمي العملة
-    </button>
-
-    <div id="coinAnimation" class="coin-animation hidden">
-      <div class="coin">
-        <div class="coin-side heads">👑</div>
-        <div class="coin-side tails">⭐</div>
-      </div>
+    <div id="groups" class="groups-container hidden">
+      <button class="group-btn group-btn-1" onclick="selectGroup('group1')">
+        <span class="emoji">🎭</span>
+        <span class="group-title">ما يبينا غريب</span>
+        <span class="group-desc">ضحك وسوالف</span>
+      </button>
+      <button class="group-btn group-btn-2" onclick="selectGroup('group2')">
+        <span class="emoji">💭</span>
+        <span class="group-title">خلّنا واقعيين</span>
+        <span class="group-desc">عميقة وعلاقات</span>
+      </button>
+      <button class="group-btn group-btn-3" onclick="selectGroup('group3')">
+        <span class="emoji">✨</span>
+        <span class="group-title">مني وإليّ</span>
+        <span class="group-desc">النفس والذات</span>
+      </button>
     </div>
 
-    <div id="result" class="result-text hidden"></div>
-  </div>
-</div>
-
-<div id="groups" class="groups-container hidden">
-  <button class="group-btn group-btn-1" onclick="selectGroup('group1')">
-    <span class="emoji">🎭</span>
-    <span class="group-title">ما يبينا غريب</span>
-    <span class="group-desc">ضحك وسوالف</span>
-  </button>
-  <button class="group-btn group-btn-2" onclick="selectGroup('group2')">
-    <span class="emoji">💭</span>
-    <span class="group-title">خلّنا واقعيين</span>
-    <span class="group-desc">عميقة وعلاقات</span>
-  </button>
-  <button class="group-btn group-btn-3" onclick="selectGroup('group3')">
-    <span class="emoji">✨</span>
-    <span class="group-title">مني وإليّ</span>
-    <span class="group-desc">النفس والذات</span>
-  </button>
-</div>
-
-<div id="card" class="card hidden">
-  <div class="turn-indicator">
-    <div class="turn-player" id="turnPlayer"></div>
-  </div>
-  <div class="question-container">
-    <p id="question" class="question-text"></p>
-  </div>
-  <div class="buttons-container">
-    <button class="action-btn next-btn" onclick="nextQuestion()">
-      <span>سؤال جديد</span>
-      <span class="btn-icon">→</span>
-    </button>
-    <button class="action-btn reset-btn" onclick="resetGame()">
-      <span>تغيير المجموعة</span>
-      <span class="btn-icon">↺</span>
-    </button>
-  </div>
-  <div class="progress-bar">
-    <div id="progress" class="progress-fill"></div>
-  </div>
-  <p id="counter" class="counter-text"></p>
-</div>
-```
-
+    <div id="card" class="card hidden">
+      <div class="turn-indicator">
+        <div class="turn-player" id="turnPlayer"></div>
+      </div>
+      <div class="question-container">
+        <p id="question" class="question-text"></p>
+      </div>
+      <div class="buttons-container">
+        <button class="action-btn next-btn" onclick="nextQuestion()">
+          <span>سؤال جديد</span>
+          <span class="btn-icon">→</span>
+        </button>
+        <button class="action-btn reset-btn" onclick="resetGame()">
+          <span>تغيير المجموعة</span>
+          <span class="btn-icon">↺</span>
+        </button>
+      </div>
+      <div class="progress-bar">
+        <div id="progress" class="progress-fill"></div>
+      </div>
+      <p id="counter" class="counter-text"></p>
+    </div>
   </div>
 
   <script src="script.js"></script>
-
 </body>
 </html>
