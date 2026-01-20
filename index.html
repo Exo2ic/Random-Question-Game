@@ -2,57 +2,149 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Background</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>لعبة الأسئلة 🎴</title>
+  <link rel="stylesheet" href="style.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
+    /* iOS Safari background fix */
     html {
-      background-color: #1a0b2e;
       height: 100%;
+      height: -webkit-fill-available;
     }
-    
     body {
       min-height: 100vh;
       min-height: -webkit-fill-available;
-      background-color: #1a0b2e;
-      background: 
-        radial-gradient(ellipse at 15% 15%, rgba(138, 43, 226, 0.3) 0%, transparent 40%),
-        radial-gradient(ellipse at 85% 85%, rgba(220, 20, 60, 0.3) 0%, transparent 40%),
-        linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 30%, #4a1942 70%, #2d1438 100%);
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 20px;
-    }
-    
-    .test-box {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      padding: 40px;
-      border-radius: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-    
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
     }
   </style>
 </head>
-<body>
-  <div class="test-box">
-    <h1>🎨 اختبار الخلفية</h1>
-    <p>إذا شفت خلفية بنفسجية/حمراء، يعني الكود يشتغل!</p>
-    <p style="margin-top: 20px;">If you see purple/red background, CSS works! ✅</p>
+<body id="body">
+
+  <div class="container">
+    <h1 class="title">🎴 لعبة الأسئلة</h1>
+
+    <!-- Coin Flip Screen -->
+    <div id="coinFlip" class="coin-flip-container">
+      <div class="flip-card">
+        <h2 class="flip-title">من يبدأ؟ 🪙</h2>
+        
+        <div class="players-input">
+          <div class="player-input-group">
+            <label>اللاعب الأول</label>
+            <input type="text" id="player1" placeholder="اكتب اسمك..." maxlength="15">
+            <div class="choice-buttons">
+              <button class="choice-btn" data-player="1" data-choice="راس" onclick="selectChoice(1, 'راس')">
+                <span class="coin-emoji">👑</span>
+                <span>راس</span>
+              </button>
+              <button class="choice-btn" data-player="1" data-choice="ذيل" onclick="selectChoice(1, 'ذيل')">
+                <span class="coin-emoji">⭐</span>
+                <span>ذيل</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="vs-divider">VS</div>
+
+          <div class="player-input-group">
+            <label>اللاعب الثاني</label>
+            <input type="text" id="player2" placeholder="اكتب اسمك..." maxlength="15">
+            <div class="choice-buttons">
+              <button class="choice-btn" data-player="2" data-choice="راس" onclick="selectChoice(2, 'راس')">
+                <span class="coin-emoji">👑</span>
+                <span>راس</span>
+              </button>
+              <button class="choice-btn" data-player="2" data-choice="ذيل" onclick="selectChoice(2, 'ذيل')">
+                <span class="coin-emoji">⭐</span>
+                <span>ذيل</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button id="flipBtn" class="flip-btn" onclick="flipCoin()" disabled>
+          🪙 ارمي العملة
+        </button>
+
+        <div id="coinAnimation" class="coin-animation hidden">
+          <div class="coin">
+            <div class="coin-side heads">👑</div>
+            <div class="coin-side tails">⭐</div>
+          </div>
+        </div>
+
+        <div id="result" class="result-text hidden"></div>
+      </div>
+    </div>
+
+    <div id="groups" class="groups-container hidden">
+      <button class="group-btn group-btn-1" onclick="selectGroup('group1')">
+        <span class="emoji">🎭</span>
+        <span class="group-title">ما يبينا غريب</span>
+        <span class="group-desc">ضحك وسوالف</span>
+      </button>
+      <button class="group-btn group-btn-2" onclick="selectGroup('group2')">
+        <span class="emoji">💭</span>
+        <span class="group-title">خلّنا واقعيين</span>
+        <span class="group-desc">عميقة وعلاقات</span>
+      </button>
+      <button class="group-btn group-btn-3" onclick="selectGroup('group3')">
+        <span class="emoji">✨</span>
+        <span class="group-title">مني وإليّ</span>
+        <span class="group-desc">النفس والذات</span>
+      </button>
+    </div>
+
+    <div id="card" class="card hidden">
+      <div class="turn-indicator">
+        <div class="turn-player" id="turnPlayer"></div>
+      </div>
+      <div class="question-container">
+        <p id="question" class="question-text"></p>
+      </div>
+      <div class="buttons-container">
+        <button class="action-btn next-btn" onclick="nextQuestion()">
+          <span>سؤال جديد</span>
+          <span class="btn-icon">→</span>
+        </button>
+        <button class="action-btn reset-btn" onclick="resetGame()">
+          <span>تغيير المجموعة</span>
+          <span class="btn-icon">↺</span>
+        </button>
+      </div>
+      <div class="progress-bar">
+        <div id="progress" class="progress-fill"></div>
+      </div>
+      <p id="counter" class="counter-text"></p>
+    </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="coded-by">
+        <span class="code-icon">{'</>'}</span>
+        <span>Coded by <strong>0xCC</strong></span>
+      </div>
+      <div class="social-links">
+        <a href="https://t.me/Exo2ic" target="_blank" rel="noopener" class="social-link telegram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.461-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.139-5.062 3.345-.479.329-.913.489-1.302.481-.428-.008-1.252-.241-1.865-.44-.752-.244-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.831-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.121.099.155.232.171.325.016.093.036.305.02.471z"/>
+          </svg>
+          <span>Telegram</span>
+        </a>
+        <a href="https://github.com/Exo2ic" target="_blank" rel="noopener" class="social-link github">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
