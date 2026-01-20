@@ -510,7 +510,7 @@ function selectGroup(group) {
   if (group === "group1") {
     document.body.classList.add("bg-fun");
     card.classList.add("card-fun");
-    titleElement.textContent = "🎭 ما يبينا غريب";
+    titleElement.textContent = "🎭 ما بينا غريب";
   } else if (group === "group2") {
     document.body.classList.add("bg-deep");
     card.classList.add("card-deep");
