@@ -358,36 +358,61 @@ flipBtn.disabled = true;
 }
 }
 
-// Add event listeners to name inputs
-document.addEventListener(‘DOMContentLoaded’, function() {
-document.getElementById(‘player1’).addEventListener(‘input’, checkFlipButton);
-document.getElementById(‘player2’).addEventListener(‘input’, checkFlipButton);
+// Initialize when page loads
+window.addEventListener(‘DOMContentLoaded’, function() {
+const player1Input = document.getElementById(‘player1’);
+const player2Input = document.getElementById(‘player2’);
+
+if (player1Input && player2Input) {
+player1Input.addEventListener(‘input’, checkFlipButton);
+player2Input.addEventListener(‘input’, checkFlipButton);
+}
 });
 
 function flipCoin() {
 const flipBtn = document.getElementById(‘flipBtn’);
 const coinAnimation = document.getElementById(‘coinAnimation’);
 const resultDiv = document.getElementById(‘result’);
-const coin = document.querySelector(’.coin’);
+const coin = coinAnimation.querySelector(’.coin’);
 
 // Disable button during flip
 flipBtn.disabled = true;
+flipBtn.style.opacity = ‘0.5’;
 
 // Show coin
 coinAnimation.classList.remove(‘hidden’);
 resultDiv.classList.add(‘hidden’);
 
-// Start flip animation
+// Remove any existing continue button
+const existingBtn = document.querySelector(’.flip-card > .flip-btn:last-of-type’);
+if (existingBtn && existingBtn.textContent.includes(‘يلا نبدأ’)) {
+existingBtn.remove();
+}
+
+// Reset coin state
+coin.classList.remove(‘flipping’);
+coin.style.transform = ‘’;
+
+// Start flip animation after small delay
+setTimeout(() => {
 coin.classList.add(‘flipping’);
+}, 100);
 
 // Determine result (50/50)
 const result = Math.random() < 0.5 ? ‘راس’ : ‘ذيل’;
 
-// After animation
+// After animation completes
 setTimeout(() => {
 coin.classList.remove(‘flipping’);
 
 ```
+// Set final rotation based on result
+if (result === 'راس') {
+  coin.style.transform = 'rotateY(0deg)';
+} else {
+  coin.style.transform = 'rotateY(180deg)';
+}
+
 // Determine winner
 if (player1Choice === result) {
   winner = player1Name;
@@ -398,25 +423,28 @@ if (player1Choice === result) {
 }
 
 // Show result
-resultDiv.innerHTML = `
-  <div style="font-size: 48px; margin-bottom: 12px;">${result === 'راس' ? '👑' : '⭐'}</div>
-  <div>${result}!</div>
-  <div style="margin-top: 12px; font-size: 24px;">🎉 ${winner} يبدأ!</div>
-`;
-resultDiv.classList.remove('hidden');
-resultDiv.classList.add('winner');
-
-// Show continue button
 setTimeout(() => {
-  const continueBtn = document.createElement('button');
-  continueBtn.className = 'flip-btn';
-  continueBtn.textContent = 'يلا نبدأ! 🎮';
-  continueBtn.onclick = showGroups;
-  resultDiv.parentElement.appendChild(continueBtn);
-}, 1000);
+  resultDiv.innerHTML = `
+    <div style="font-size: 48px; margin-bottom: 12px;">${result === 'راس' ? '👑' : '⭐'}</div>
+    <div style="font-size: 22px; margin-bottom: 8px;"><strong>${result}</strong></div>
+    <div style="margin-top: 12px; font-size: 24px;">🎉 ${winner} يبدأ!</div>
+  `;
+  resultDiv.classList.remove('hidden');
+  resultDiv.classList.add('winner');
+  
+  // Show continue button
+  setTimeout(() => {
+    const continueBtn = document.createElement('button');
+    continueBtn.className = 'flip-btn';
+    continueBtn.style.marginTop = '16px';
+    continueBtn.innerHTML = '🎮 يلا نبدأ اللعب!';
+    continueBtn.onclick = showGroups;
+    flipBtn.parentElement.appendChild(continueBtn);
+  }, 800);
+}, 400);
 ```
 
-}, 1600);
+}, 2000);
 }
 
 function showGroups() {
@@ -520,21 +548,31 @@ btn.classList.remove(‘selected’);
 });
 
 // Hide coin animation and result
-document.getElementById(‘coinAnimation’).classList.add(‘hidden’);
+const coinAnimation = document.getElementById(‘coinAnimation’);
+const coin = coinAnimation.querySelector(’.coin’);
+coinAnimation.classList.add(‘hidden’);
+coin.classList.remove(‘flipping’);
+coin.style.transform = ‘’;
+
 document.getElementById(‘result’).classList.add(‘hidden’);
 document.getElementById(‘result’).innerHTML = “”;
 
-// Remove continue button if exists
-const continueBtn = document.querySelector(’.flip-card > .flip-btn:last-child’);
-if (continueBtn && continueBtn.textContent.includes(‘يلا نبدأ’)) {
-continueBtn.remove();
+// Remove ALL extra buttons
+const allButtons = document.querySelectorAll(’.flip-card > .flip-btn’);
+allButtons.forEach((btn, index) => {
+if (index > 0) { // Keep only first button (the original flip button)
+btn.remove();
 }
+});
 
 // Reset flip button
-document.getElementById(‘flipBtn’).disabled = true;
+const flipBtn = document.getElementById(‘flipBtn’);
+flipBtn.disabled = true;
+flipBtn.style.opacity = ‘’;
 
 // Show coin flip screen
 document.getElementById(‘coinFlip’).style.display = ‘block’;
+document.getElementById(‘groups’).style.display = ‘none’;
 }
 
 // Prevent pull-to-refresh on mobile
