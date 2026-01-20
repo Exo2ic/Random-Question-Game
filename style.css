@@ -633,6 +633,157 @@ body::before {
   .coin-animation {
     height: 150px;
   }
+
+  .footer {
+    padding: 20px 16px;
+    margin-top: 32px;
+  }
+
+  .coded-by {
+    font-size: 13px;
+  }
+
+  .social-link {
+    font-size: 12px;
+    padding: 7px 14px;
+  }
+
+  .social-link svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  padding: 24px 20px;
+  margin-top: 40px;
+  background: rgba(0, 0, 0, 0.03);
+  backdrop-filter: blur(10px);
+}
+
+.bg-deep .footer {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.bg-self .footer {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bg-fun .footer {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.footer-content {
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.coded-by {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #636e72;
+  font-weight: 500;
+}
+
+.bg-deep .coded-by,
+.bg-self .coded-by {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.code-icon {
+  font-size: 18px;
+  font-weight: 700;
+  color: #6c5ce7;
+}
+
+.bg-deep .code-icon {
+  color: #74b9ff;
+}
+
+.bg-self .code-icon {
+  color: #2dd4bf;
+}
+
+.coded-by strong {
+  color: #2d3436;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.bg-deep .coded-by strong,
+.bg-self .coded-by strong {
+  color: #ffffff;
+}
+
+.social-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.social-link:hover {
+  transform: translateY(-2px);
+}
+
+.social-link:active {
+  transform: translateY(0);
+}
+
+.telegram {
+  background: linear-gradient(135deg, #0088cc 0%, #229ED9 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+}
+
+.telegram:hover {
+  box-shadow: 0 6px 20px rgba(0, 136, 204, 0.4);
+}
+
+.github {
+  background: linear-gradient(135deg, #24292e 0%, #1a1e22 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(36, 41, 46, 0.3);
+}
+
+.github:hover {
+  box-shadow: 0 6px 20px rgba(36, 41, 46, 0.4);
+}
+
+.bg-deep .telegram,
+.bg-self .telegram {
+  background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%);
+}
+
+.bg-deep .github,
+.bg-self .github {
+  background: linear-gradient(135deg, #333333 0%, #1a1a1a 100%);
+}
+
+.social-link svg {
+  width: 18px;
+  height: 18px;
 }
 
 /* Smooth touch interactions */
