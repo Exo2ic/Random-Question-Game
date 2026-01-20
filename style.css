@@ -13,7 +13,8 @@ body {
   overflow-x: hidden;
   transition: background 0.6s ease;
   position: relative;
-  background-image: url('index_background.png');
+  background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #4a1942 100%);
+  background-image: url('./index_background.png'), linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #4a1942 100%);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -43,16 +44,31 @@ body::before {
 
 /* Theme backgrounds */
 .bg-fun {
-  background-image: url('group1_background.png');
+  background: linear-gradient(135deg, #0d47a1 0%, #1565c0 30%, #5e35b1 70%, #7b1fa2 100%);
+  background-image: url('./group1_background.png'), linear-gradient(135deg, #0d47a1 0%, #1565c0 30%, #5e35b1 70%, #7b1fa2 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .bg-deep {
-  background-image: url('group2_background.png');
+  background: linear-gradient(135deg, #880e4f 0%, #ad1457 30%, #c2185b 70%, #d81b60 100%);
+  background-image: url('./group2_background.png'), linear-gradient(135deg, #880e4f 0%, #ad1457 30%, #c2185b 70%, #d81b60 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: #f0f0f0;
 }
 
 .bg-self {
-  background-image: url('group3_background.png');
+  background: linear-gradient(135deg, #212121 0%, #424242 30%, #616161 70%, #757575 100%);
+  background-image: url('./group3_background.png'), linear-gradient(135deg, #212121 0%, #424242 30%, #616161 70%, #757575 100%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: #ffffff;
 }
 
@@ -466,25 +482,37 @@ body::before {
 }
 
 .card-fun {
-  background-image: url('group1.png');
+  background: linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(94, 53, 177, 0.3) 100%);
+  background-image: url('./group1.png'), linear-gradient(135deg, rgba(13, 71, 161, 0.3) 0%, rgba(94, 53, 177, 0.3) 100%);
   background-color: transparent;
-  color: #2d3436;
+  color: #ffffff;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .card-deep {
-  background-image: url('group2.png');
+  background: linear-gradient(135deg, rgba(136, 14, 79, 0.3) 0%, rgba(194, 24, 91, 0.3) 100%);
+  background-image: url('./group2.png'), linear-gradient(135deg, rgba(136, 14, 79, 0.3) 0%, rgba(194, 24, 91, 0.3) 100%);
   background-color: transparent;
-  color: #f0f0f0;
+  color: #ffffff;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .card-self {
-  background-image: url('group3.png');
+  background: linear-gradient(135deg, rgba(33, 33, 33, 0.4) 0%, rgba(97, 97, 97, 0.4) 100%);
+  background-image: url('./group3.png'), linear-gradient(135deg, rgba(33, 33, 33, 0.4) 0%, rgba(97, 97, 97, 0.4) 100%);
   background-color: transparent;
   color: #ffffff;
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .question-container {
