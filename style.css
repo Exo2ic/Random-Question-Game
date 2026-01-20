@@ -13,15 +13,24 @@ body {
   overflow-x: hidden;
   transition: background 0.6s ease;
   position: relative;
-  background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #4a1942 100%);
-  background-image: url('./index_background.png'), linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #4a1942 100%);
-  background-size: cover;
+  width: 100%;
+  height: 100%;
+  
+  /* Strong gradient fallback */
+  background: #1a0b2e;
+  background: radial-gradient(ellipse at top left, #1a0b2e 0%, #2d1b4e 40%, #4a1942 100%);
+  
+  /* Try to load background image */
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(138, 43, 226, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(220, 20, 60, 0.3) 0%, transparent 50%),
+    url('index_background.png');
+  
+  background-size: cover, cover, cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: scroll;
   -webkit-background-size: cover;
-  width: 100%;
-  height: 100%;
 }
 
 /* iOS Safari specific fixes */
@@ -59,8 +68,16 @@ body::before {
 
 /* Theme backgrounds */
 .bg-fun {
-  background: linear-gradient(135deg, #0d47a1 0%, #1565c0 30%, #5e35b1 70%, #7b1fa2 100%);
-  background-image: url('./group1_background.png'), linear-gradient(135deg, #0d47a1 0%, #1565c0 30%, #5e35b1 70%, #7b1fa2 100%);
+  /* Strong gradient fallback */
+  background: #0d47a1;
+  background: radial-gradient(ellipse at top left, #0d47a1 0%, #1565c0 30%, #5e35b1 60%, #7b1fa2 100%);
+  
+  /* Try to load background image */
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(0, 150, 255, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(123, 31, 162, 0.4) 0%, transparent 50%),
+    url('group1_background.png');
+  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -69,8 +86,16 @@ body::before {
 }
 
 .bg-deep {
-  background: linear-gradient(135deg, #880e4f 0%, #ad1457 30%, #c2185b 70%, #d81b60 100%);
-  background-image: url('./group2_background.png'), linear-gradient(135deg, #880e4f 0%, #ad1457 30%, #c2185b 70%, #d81b60 100%);
+  /* Strong gradient fallback */
+  background: #880e4f;
+  background: radial-gradient(ellipse at top left, #880e4f 0%, #ad1457 30%, #c2185b 60%, #d81b60 100%);
+  
+  /* Try to load background image */
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(255, 80, 120, 0.4) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(216, 27, 96, 0.4) 0%, transparent 50%),
+    url('group2_background.png');
+  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -80,8 +105,16 @@ body::before {
 }
 
 .bg-self {
-  background: linear-gradient(135deg, #212121 0%, #424242 30%, #616161 70%, #757575 100%);
-  background-image: url('./group3_background.png'), linear-gradient(135deg, #212121 0%, #424242 30%, #616161 70%, #757575 100%);
+  /* Strong gradient fallback */
+  background: #212121;
+  background: radial-gradient(ellipse at top left, #212121 0%, #424242 30%, #616161 60%, #757575 100%);
+  
+  /* Try to load background image */
+  background-image: 
+    radial-gradient(ellipse at 20% 20%, rgba(150, 150, 150, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(66, 66, 66, 0.3) 0%, transparent 50%),
+    url('group3_background.png');
+  
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
