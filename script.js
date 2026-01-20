@@ -486,6 +486,10 @@ function showGroups() {
   document.getElementById('coinFlip').style.display = 'none';
   document.getElementById('groups').classList.remove('hidden');
   document.getElementById('groups').style.display = 'flex';
+  
+  // Update title for groups selection
+  const titleElement = document.querySelector('.title');
+  titleElement.textContent = "🎴 اختر المجموعة";
 }
 
 function selectGroup(group) {
@@ -500,15 +504,21 @@ function selectGroup(group) {
   const card = document.getElementById("card");
   card.className = "card";
 
+  // Update title based on selected group
+  const titleElement = document.querySelector('.title');
+  
   if (group === "group1") {
     document.body.classList.add("bg-fun");
     card.classList.add("card-fun");
+    titleElement.textContent = "🎭 ما يبينا غريب";
   } else if (group === "group2") {
     document.body.classList.add("bg-deep");
     card.classList.add("card-deep");
+    titleElement.textContent = "💭 خلّنا واقعيين";
   } else if (group === "group3") {
     document.body.classList.add("bg-self");
     card.classList.add("card-self");
+    titleElement.textContent = "✨ مني وإليّ";
   }
 
   nextQuestion();
@@ -564,6 +574,10 @@ function resetGame() {
   // Reset to coin flip
   document.getElementById("card").classList.add("hidden");
   document.body.className = "";
+  
+  // Reset title
+  const titleElement = document.querySelector('.title');
+  titleElement.textContent = "🎴 لعبة الأسئلة";
   
   // Reset all values
   currentGroup = [];
