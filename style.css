@@ -317,19 +317,26 @@ body::before {
 .turn-player {
   text-align: center;
   padding: 14px 20px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
   animation: pulse 2s ease-in-out infinite;
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .card-deep .turn-player {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .card-self .turn-player {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.card-fun .turn-player {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 @keyframes pulse {
@@ -449,24 +456,24 @@ body::before {
 
 .card-fun {
   background-image: url('group1.png');
-  background-color: rgba(255, 240, 220, 0.95);
-  background-blend-mode: overlay;
+  background-color: transparent;
   color: #2d3436;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .card-deep {
   background-image: url('group2.png');
-  background-color: rgba(30, 30, 46, 0.95);
-  background-blend-mode: overlay;
+  background-color: transparent;
   color: #f0f0f0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
 
 .card-self {
   background-image: url('group3.png');
-  background-color: rgba(15, 118, 110, 0.85);
-  background-blend-mode: overlay;
+  background-color: transparent;
   color: #ffffff;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .question-container {
@@ -484,6 +491,22 @@ body::before {
   font-weight: 600;
   text-align: center;
   animation: questionFade 0.4s ease;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-fun .question-text {
+  color: #ffffff;
+  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.card-deep .question-text {
+  color: #ffffff;
+  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.card-self .question-text {
+  color: #ffffff;
+  text-shadow: 2px 2px 12px rgba(0, 0, 0, 0.5);
 }
 
 @keyframes questionFade {
@@ -505,7 +528,7 @@ body::before {
 }
 
 .action-btn {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
   border: none;
   padding: 16px 24px;
   border-radius: 16px;
@@ -516,7 +539,9 @@ body::before {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
 }
 
 .action-btn:active {
@@ -524,30 +549,32 @@ body::before {
 }
 
 .next-btn {
-  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  background: linear-gradient(135deg, rgba(162, 155, 254, 0.8) 0%, rgba(108, 92, 231, 0.9) 100%);
   color: white;
+  backdrop-filter: blur(10px);
 }
 
 .card-deep .next-btn {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  background: linear-gradient(135deg, rgba(116, 185, 255, 0.8) 0%, rgba(9, 132, 227, 0.9) 100%);
 }
 
 .card-self .next-btn {
-  background: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.5) 100%);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.4);
 }
 
 .reset-btn {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
 }
 
 .card-deep .reset-btn {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .card-self .reset-btn {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.3);
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -560,18 +587,23 @@ body::before {
 .progress-bar {
   width: 100%;
   height: 6px;
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 12px;
+  backdrop-filter: blur(5px);
 }
 
 .card-deep .progress-bar {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .card-self .progress-bar {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.card-fun .progress-bar {
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .progress-fill {
@@ -592,8 +624,10 @@ body::before {
 .counter-text {
   text-align: center;
   font-size: 14px;
-  opacity: 0.7;
+  opacity: 0.9;
   font-weight: 500;
+  color: #ffffff;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 .hidden {
