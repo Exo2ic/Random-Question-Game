@@ -345,17 +345,47 @@ player2Name = document.getElementById(‘player2’).value.trim();
 
 const flipBtn = document.getElementById(‘flipBtn’);
 
-if (player1Name && player2Name && player1Choice && player2Choice) {
+// Check if all required data is present
+if (!player1Name || !player2Name || !player1Choice || !player2Choice) {
+flipBtn.disabled = true;
+return;
+}
+
 // Check if choices are different
 if (player1Choice === player2Choice) {
 flipBtn.disabled = true;
-alert(‘لازم كل لاعب يختار جهة مختلفة! 🪙’);
+// Show error message temporarily
+const errorMsg = document.createElement(‘div’);
+errorMsg.style.cssText = ‘color: #e74c3c; text-align: center; margin-top: 12px; font-weight: 600; font-size: 14px;’;
+errorMsg.textContent = ‘⚠️ لازم كل لاعب يختار جهة مختلفة!’;
+errorMsg.id = ‘error-msg’;
+
+```
+// Remove old error if exists
+const oldError = document.getElementById('error-msg');
+if (oldError) oldError.remove();
+
+// Add error after flip button
+flipBtn.parentElement.insertBefore(errorMsg, flipBtn.nextSibling);
+
+// Remove error after 3 seconds
+setTimeout(() => {
+  if (document.getElementById('error-msg')) {
+    document.getElementById('error-msg').remove();
+  }
+}, 3000);
+
 return;
+```
+
 }
+
+// Remove error message if exists
+const errorMsg = document.getElementById(‘error-msg’);
+if (errorMsg) errorMsg.remove();
+
+// Enable button
 flipBtn.disabled = false;
-} else {
-flipBtn.disabled = true;
-}
 }
 
 // Initialize when page loads
