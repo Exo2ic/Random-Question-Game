@@ -1,667 +1,630 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Cairo", "Tajawal", sans-serif;
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden;
-  transition: background 0.6s ease;
-  position: relative;
-}
-
-/* Background animations */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: -1;
-  opacity: 0.1;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.2) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(255,255,255,0.2) 0%, transparent 50%);
-  animation: float 20s ease-in-out infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-}
-
-/* Theme backgrounds */
-.bg-fun {
-  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #ffecd2 100%);
-}
-
-.bg-deep {
-  background: linear-gradient(135deg, #1e1e2e 0%, #2d2d44 50%, #1a1a2e 100%);
-  color: #f0f0f0;
-}
-
-.bg-self {
-  background: linear-gradient(135deg, #0f766e 0%, #14b8a6 50%, #2dd4bf 100%);
-  color: #ffffff;
-}
-
-.container {
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.title {
-  font-size: clamp(28px, 8vw, 40px);
-  font-weight: 800;
-  margin-bottom: 40px;
-  text-shadow: 2px 4px 12px rgba(0,0,0,0.1);
-  animation: slideDown 0.6s ease;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Coin Flip Screen */
-.coin-flip-container {
-  width: 100%;
-  animation: fadeIn 0.8s ease;
-}
-
-.flip-card {
-  background: rgba(255, 255, 255, 0.95);
-  padding: 32px 24px;
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.flip-title {
-  font-size: 28px;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 32px;
-  color: #2d3436;
-}
-
-.players-input {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  margin-bottom: 32px;
-}
-
-.player-input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.player-input-group label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #2d3436;
-  text-align: center;
-}
-
-.player-input-group input {
-  padding: 14px 16px;
-  border: 2px solid #dfe6e9;
-  border-radius: 12px;
-  font-size: 16px;
-  text-align: center;
-  transition: all 0.3s ease;
-  background: white;
-  color: #2d3436;
-  font-weight: 500;
-}
-
-.player-input-group input:focus {
-  outline: none;
-  border-color: #a29bfe;
-  box-shadow: 0 0 0 3px rgba(162, 155, 254, 0.1);
-}
-
-.choice-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.choice-btn {
-  padding: 14px;
-  border: 2px solid #dfe6e9;
-  border-radius: 12px;
-  background: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #636e72;
-}
-
-.choice-btn:hover {
-  transform: translateY(-2px);
-  border-color: #a29bfe;
-}
-
-.choice-btn.selected {
-  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%) !important;
-  border-color: #6c5ce7 !important;
-  color: white !important;
-  box-shadow: 0 6px 20px rgba(108, 92, 231, 0.3) !important;
-  transform: scale(1.02) !important;
-}
-
-.coin-emoji {
-  font-size: 24px;
-}
-
-.vs-divider {
-  text-align: center;
-  font-size: 24px;
-  font-weight: 800;
-  color: #6c5ce7;
-  margin: 8px 0;
-  text-shadow: 2px 2px 8px rgba(108, 92, 231, 0.2);
-}
-
-.flip-btn {
-  width: 100%;
-  padding: 18px;
-  border: none;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-  color: #2d3436;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 8px 24px rgba(253, 203, 110, 0.4);
-  margin-bottom: 24px;
-}
-
-.flip-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(253, 203, 110, 0.5);
-}
-
-.flip-btn:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.flip-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-.coin-animation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 180px;
-  margin: 24px 0;
-}
-
-.coin {
-  width: 120px;
-  height: 120px;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: rotateY(0deg);
-}
-
-.coin.flipping {
-  animation: coinFlip 1.8s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-@keyframes coinFlip {
-  0% { 
-    transform: rotateY(0deg) rotateX(0deg) scale(1); 
-  }
-  50% {
-    transform: rotateY(900deg) rotateX(180deg) scale(1.1);
-  }
-  100% { 
-    transform: rotateY(1800deg) rotateX(360deg) scale(1); 
-  }
-}
-
-.coin-side {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 60px;
-  backface-visibility: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-  border: 4px solid rgba(255, 255, 255, 0.3);
-}
-
-.heads {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  transform: rotateY(0deg) translateZ(1px);
-}
-
-.tails {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
-  transform: rotateY(180deg) translateZ(1px);
-}
-
-.result-text {
-  text-align: center;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 20px;
-  border-radius: 16px;
-  margin-bottom: 16px;
-  animation: resultAppear 0.5s ease;
-}
-
-.result-text.winner {
-  background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
-  color: white;
-  box-shadow: 0 8px 24px rgba(0, 184, 148, 0.3);
-}
-
-@keyframes resultAppear {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Turn Indicator */
-.turn-indicator {
-  margin-bottom: 24px;
-}
-
-.turn-player {
-  text-align: center;
-  padding: 14px 20px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 700;
-  animation: pulse 2s ease-in-out infinite;
-}
-
-.card-deep .turn-player {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.card-self .turn-player {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* Groups Container */
-.groups-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0 10px;
-  animation: fadeIn 0.8s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-.group-btn {
-  background: rgba(255, 255, 255, 0.95);
-  border: none;
-  padding: 24px 20px;
-  border-radius: 20px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  position: relative;
-  overflow: hidden;
-  font-weight: 600;
-}
-
-.group-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: left 0.5s;
-}
-
-.group-btn:hover::before,
-.group-btn:active::before {
-  left: 100%;
-}
-
-.group-btn:active {
-  transform: scale(0.97);
-}
-
-.group-btn-1 {
-  background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
-  color: #2d3436;
-}
-
-.group-btn-2 {
-  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
-  color: #ffffff;
-}
-
-.group-btn-3 {
-  background: linear-gradient(135deg, #55efc4 0%, #00b894 100%);
-  color: #2d3436;
-}
-
-.emoji {
-  font-size: 32px;
-  margin-bottom: 4px;
-}
-
-.group-title {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.group-desc {
-  font-size: 14px;
-  opacity: 0.8;
-  font-weight: 400;
-}
-
-/* Card */
-.card {
-  width: 100%;
-  max-width: 500px;
-  padding: 40px 24px 32px;
-  border-radius: 24px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-  animation: cardAppear 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-@keyframes cardAppear {
-  from {
-    opacity: 0;
-    transform: translateY(40px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.card-fun {
-  background: rgba(255, 255, 255, 0.95);
-  color: #2d3436;
-}
-
-.card-deep {
-  background: rgba(30, 30, 46, 0.95);
-  color: #f0f0f0;
-}
-
-.card-self {
-  background: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.question-container {
-  min-height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 32px;
-  padding: 20px;
-}
-
-.question-text {
-  font-size: clamp(20px, 5vw, 26px);
-  line-height: 1.6;
-  font-weight: 600;
-  text-align: center;
-  animation: questionFade 0.4s ease;
-}
-
-@keyframes questionFade {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.buttons-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.action-btn {
-  background: rgba(0, 0, 0, 0.1);
-  border: none;
-  padding: 16px 24px;
-  border-radius: 16px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.action-btn:active {
-  transform: scale(0.98);
-}
-
-.next-btn {
-  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
-  color: white;
-}
-
-.card-deep .next-btn {
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
-}
-
-.card-self .next-btn {
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.4);
-}
-
-.reset-btn {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.card-deep .reset-btn {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.card-self .reset-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.btn-icon {
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* Progress Bar */
-.progress-bar {
-  width: 100%;
-  height: 6px;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-
-.card-deep .progress-bar {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.card-self .progress-bar {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #a29bfe 0%, #6c5ce7 100%);
-  border-radius: 10px;
-  transition: width 0.4s ease;
-}
-
-.card-deep .progress-fill {
-  background: linear-gradient(90deg, #74b9ff 0%, #0984e3 100%);
-}
-
-.card-self .progress-fill {
-  background: rgba(255, 255, 255, 0.8);
-}
-
-.counter-text {
-  text-align: center;
-  font-size: 14px;
-  opacity: 0.7;
-  font-weight: 500;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* Mobile optimizations */
-@media (max-width: 480px) {
-  .container {
-    padding: 16px;
-  }
-
-  .title {
-    margin-bottom: 32px;
-  }
-
-  .card {
-    padding: 32px 20px 24px;
-  }
-
-  .question-container {
-    min-height: 180px;
-    padding: 16px;
-  }
-
-  .group-btn {
-    padding: 20px 16px;
-  }
-
-  .flip-card {
-    padding: 24px 16px;
-  }
-
-  .flip-title {
-    font-size: 24px;
-    margin-bottom: 24px;
-  }
-
-  .players-input {
-    gap: 16px;
-  }
-
-  .coin {
-    width: 100px;
-    height: 100px;
-  }
-
-  .coin-side {
-    font-size: 50px;
-  }
-
-  .coin-animation {
-    height: 150px;
-  }
-}
-
-/* Smooth touch interactions */
-@media (hover: none) and (pointer: coarse) {
-  .group-btn:hover {
-    transform: none;
+const questions = {
+  group1: [
+    "شو الموقف اللي لين الحين إذا تذكرته تضحك على نفسك من قلب؟",
+    "لو كنا في فيلم رعب، منو أول واحد فينا بيموت؟ وليش؟",
+    "شو أغرب إشاعة طلعت عنك وأنت صغير؟",
+    "لو بتغيّر اسم واحد فينا لاسم مضحك، منو ووش الاسم؟",
+    "شو أكثر موضة لحقتها وندمت عليها الحين؟",
+    "لو صرت ترند اليوم، تتوقع شو السبب؟",
+    "شو الكلمة أو الجملة اللي دايم تقولها بدون ما تحس؟",
+    "لو بنسافر 10 ساعات بالسيارة، منو تمنعه يمسك الـ AUX؟",
+    "شو الشيء اللي مستعد تدافع عنه بقوة وهو أصلاً تافه؟",
+    "لو تعيش حياة شخص من الموجودين ليوم واحد، منو تختار؟",
+    "شو أغرب أكلة جربتها وعجبتك والناس تشوفها مقرفة؟",
+    "لو كنت إيموجي، أي واحد يمثلك؟",
+    "شو الشيء اللي مستحيل تسويه حتى لو عطوك مليون درهم؟",
+    "شو أغرب تصرف تسويه لما تكون بروحك فالبيت؟",
+    "لو صرت رئيس دولة ليوم، شو أول قرار بتلغيه؟",
+    "شو المهارة التافهة اللي تفتخر إنك تتقنها؟",
+    "لو عندك قوة خارقة بس تكون غبية، شو تختار؟",
+    "شو الكرتون اللي كنت تحبه وانت صغير ولين الحين تشوفه؟",
+    "لو حياتك فيلم، شو تصنيفه؟",
+    "منو أكثر واحد فينا يضيع فالسالفة؟",
+    "شو أغرب مكان نمت فيه؟",
+    "لو بتغيّر لون شيء في الطبيعة، شو بتغيّر؟",
+    "شو الشيء اللي الكل يحبه إلا أنت؟",
+    "لو كنت حيوان، شو تتوقع تكون؟",
+    "شو كلمة لهجية إماراتية تحب تستخدمها؟",
+    "لو صرت شبح، منو أول واحد بتخوفه؟",
+    "شو أغبى كذبة كذبتها وصدقوها؟",
+    "تفضل تعيش في زمن الديناصورات ولا المستقبل؟",
+    "شو اللقب اللي كانوا ينادونك فيه وانت صغير وتكرهه؟",
+    "لو تقدر تمحي سنة من حياتك، أي سنة؟",
+    "شو أغرب فوبيا عندك؟",
+    "لو كنت نكهة آيسكريم، شو بتكون؟",
+    "منو أكثر واحد فينا يسوي مشاكل وهو هادي؟",
+    "شو الشيء اللي دايم يضيع منك؟",
+    "لو تقدر تكلم الجمادات، شو أول شيء تكلمه؟",
+    "شو أسوأ قصة شعر سويتها؟",
+    "لو ربحت يانصيب، شو أول تفاهة تشتريها؟",
+    "شو الشيء اللي تحسه فخم وهو عادي؟",
+    "لو تبدل حياتك مع مشهور ليوم، منو؟",
+    "شو أكثر تطبيق يضيع وقتك؟",
+    "لو كنت مدرس، شو مادة مستحيل تدرسها؟",
+    "شو أغرب حلم حلمته؟",
+    "منو الشخص اللي لو صار طيار ما تركب وياه؟",
+    "شو الشيء اللي تعتبره جريمة بحق الأكل؟",
+    "لو كنت عطر، شو ريحتك؟",
+    "شو الحركة اللي تسويها لما تتوتر؟",
+    "لو تعيش داخل لعبة فيديو، أي لعبة؟",
+    "شو الشيء اللي ودك تتعلمه بس تحس الوقت فات؟",
+    "لو كنت بطل خارق، شو اسمك؟",
+    "شو سؤال ودك تسأله بس مستحي؟",
+    "شو تطبيق ودك تحذفه بس ما تقدر؟",
+    "لو كنت براند، شو شعارك؟",
+    "شو هدية مستحيل ترفضها؟",
+    "لو ترجع ليوم من طفولتك، أي يوم؟",
+    "شو أغرب نصيحة سمعتها؟",
+    "لو كنت بطل لعبة، شو ضربتك القاضية؟",
+    "شو الكنز اللي مخبيه بغرفتك؟",
+    "لو تسوي يوم وطني لشي تحبه، شو هو؟",
+    "شو الشيء اللي تشتريه دايم وتضيعه؟",
+    "لو كنت شيف، شو طبختك؟",
+    "شو أكثر صوت يزعجك؟",
+    "تفضل بيت مسكون ولا بر فاضي؟",
+    "شو مسلسل شفته أكثر من 5 مرات؟",
+    "لو صرت طيار، أول دولة تطير لها؟",
+    "شو أغرب عادة قبل النوم؟",
+    "آلة زمن: ماضي ولا مستقبل؟",
+    "شو اختراع تتمنى يكون باسمك؟",
+    "لو صرت مدير شركة، شو أول قرار؟",
+    "شو الشيء اللي يضحكك مهما كنت زعلان؟",
+    "لو كنت لون، شو انطباع الناس عنك؟",
+    "شو أكثر كلمة تستخدمها فالشات؟",
+    "لو تتعلم لغة بثانية، أي لغة؟",
+    "شو فيلم غير تفكيرك؟",
+    "لو كنت أغنية، شو عنوانك؟",
+    "شو تسوي لو صرت خفي؟",
+    "لو كنت ملك الغابة، أي حيوان تطرده؟",
+    "شو أكثر شي يتحمسك فجأة؟",
+    "لو تعيش في كوكب ثاني، شو بتسميه؟",
+    "شو الشيء اللي دايم تنسى اسمه؟",
+    "لو كنت رسام، شو أول لوحة؟",
+    "شو أغرب شي شفته فالشارع؟",
+    "لو صرت مذيع، منو أول ضيف؟",
+    "شو المكان اللي تحلم تزوره بس غالي؟",
+    "لو كنت عنصر طبيعي، شو بتكون؟",
+    "شو شي يخوفك وهو تافه؟",
+    "لو تغيّر قانون في الفيزياء، شو؟",
+    "شو الأكل اللي تقدر تعيش عليه طول عمرك؟",
+    "لو صرت مخترع، شو جهازك؟",
+    "شو أكثر شي يزعجك فالسوشيال؟",
+    "لو كنت كتاب، شو اسمك؟",
+    "شو سر الكل يعرفه عنك؟",
+    "لو تغيّر صوتك بصوت مشهور، منو؟",
+    "شو شي ندمت ما سويته مراهق؟",
+    "لو صرت رائد فضاء، شو أول شي تسويه؟",
+    "شو الشي اللي يخليك متفائل؟",
+    "لو كنت فصل، أي فصل؟",
+    "شو أكثر موقف ضحك صار لك فالمدرسة؟",
+    "لو تحذف كلمة من القاموس، أي كلمة؟",
+    "شو الحلم اللي للحين تسعى له؟",
+    "لو كنت لعبة، شو أول قانون فيها؟"
+  ],
+  group2: [
+    "شو الشي اللي يخليك تثق في شخص من أول لقاء؟",
+    "تحس المسافة ممكن تبرد المشاعر؟",
+    "شو أكبر تضحية سويتها بحياتك وما حد يدري عنها؟",
+    "شو كلمة قلتها وندمت عليها بعدين؟",
+    "تحس تواصلنا صادق ولا فيه حواجز؟",
+    "شو الخط الأحمر اللي لو انكسر تنتهي العلاقة؟",
+    "الصراحة المطلقة دايم صح ولا أحيان تجرح؟",
+    "شو موقف صار بينا وخلاك تغليني أكثر؟",
+    "لو صادك موقف صعب، أنا أول شخص تكلمه؟",
+    "شو الشي اللي ينقص علاقتنا عشان تكون مثالية؟",
+    "تحس تقدر تكون على طبيعتك وياي 100%؟",
+    "شو ذكرى ودك نعيدها مرة ثانية؟",
+    "شو الشي اللي يخليك تنعزل عن الناس؟",
+    "فيه سر كنت ودك تقوله لي وتراجعت؟",
+    "شو قيمة مستحيل تتنازل عنها عشان أي شخص؟",
+    "كيف تتعامل مع غيرتي أو برودي؟",
+    "شو الشي اللي يخليك تحس إنك مقدّر؟",
+    "لو خيروك بين المال وراحة البال، شو تختار؟",
+    "شو لغة الحب اللي تلمسك أكثر؟",
+    "تتوقع نكون مع بعض بعد 10 سنين؟",
+    "شو الشي اللي يكسر داخلك؟",
+    "بكلمة وحدة، كيف توصف علاقتنا؟",
+    "شو أكثر شي يعجبك في شخصيتي غير الشكل؟",
+    "تحس إنك مديون لي بشي؟",
+    "شو تمنيت أسويه لك بيوم ميلادك وما صار؟",
+    "متى آخر مرة حسيت بالخذلان؟",
+    "شي من ماضيك يأثر على علاقتنا؟",
+    "شو يخليك تسامح شخص مهما غلط؟",
+    "تحس نكمل بعض ولا نشبه بعض؟",
+    "شو أكبر درس تعلمته من علاقة سابقة؟",
+    "شو يخليك تبتسم أول ما تسمع اسمي؟",
+    "الحب قرار ولا شعور؟",
+    "شو تصرف يخليك تفقد احترامك لشخص؟",
+    "كيف تتخيل نكبر مع بعض؟",
+    "شو الخلاف اللي دايم يتكرر بينا؟",
+    "تحس أعطيك مساحتك الكافية؟",
+    "شو حلم ودك نحققه سوى؟",
+    "فيه عيب فيك تحاول تخفيه عني؟",
+    "شو يخليك تقول الحمد لله إنه في حياتي؟",
+    "لو هذي آخر سالفة بينا، شو تقول؟",
+    "تحس الصراحة الزايدة تجرح؟",
+    "موقف ندمت إنك ما دافعت عني فيه؟",
+    "وجودي بحياتك نعمة ولا مسؤولية؟",
+    "شو أمنيتك السرية لعلاقتنا؟",
+    "تحس أهتم فيك مثل ما تهتم فيني؟",
+    "شو يخليك تخاف تفقدني؟",
+    "لو نرجع لأول يوم، شو تغير؟",
+    "فيه موضوع محرّم بينا؟ وليش؟",
+    "متى حسيت إنك غريب عني؟",
+    "الحب يكفي لحل كل المشاكل؟",
+    "شو شي مستحيل تغفره لي؟",
+    "لو افترقنا، نقدر نظل أصدقاء؟",
+    "شو الانطباع الأول عني ولسه موجود؟",
+    "متى حسيت ثقتك فيني اهتزت؟",
+    "شو صفة فيني تشوفها نقطة ضعف؟",
+    "تحس الحب وحده يكفي للاستمرار؟",
+    "متى حسيت إني خذلتك؟",
+    "لو بين مصلحتك ومصلحتي، شو تختار؟",
+    "شو كلمة ودك تقولها وقت الزعل وما قلتها؟",
+    "تحس تضطر تجاملني أحيان؟",
+    "شو سر تخبيه عني عشان ما أتضايق؟",
+    "كيف تشوف حياتنا بعد 20 سنة؟",
+    "شو أكثر شي يخوفك من الارتباط؟",
+    "الغيرة دليل حب ولا قلة ثقة؟",
+    "شو يخليك تتمسك فيني رغم عيوبي؟",
+    "متى فكرت تنهي العلاقة؟",
+    "شو كلمة تمنيت تسمعها مني اليوم؟",
+    "تحس أفهمك من نظرتك؟",
+    "شو يخليك تفتخر إنك تعرفني؟",
+    "لو صارت خيانة، فيه فرصة ثانية؟",
+    "شو أكثر صفة تستفزك بالناس؟",
+    "المال يغير النفوس؟",
+    "شو الاعتراف اللي ودك تقوله الحين؟",
+    "تحس إني أقيدك؟",
+    "شو يخليك تطمّن لي؟",
+    "كيف تتعامل مع صمتي إذا تضايقت؟",
+    "شو تضحية تنتظرها مني؟",
+    "تحس نستحق بعض؟",
+    "شو أكثر شي تفتقده لما نغيب؟",
+    "لو كنت قاضي، شو حكمك علي؟",
+    "ذكرى ودك تمحيها من علاقتنا؟",
+    "صراحتنا زايدة ولا نحتاج حدود؟",
+    "شو يخليك تثق في وعودي؟",
+    "كيف تأثير أهلك على قراراتك؟",
+    "شو أكثر شي يجرحك مني بدون ما أحس؟",
+    "المواجهة أفضل ولا التغافل؟",
+    "شو حلم مشترك نبدأ فيه؟",
+    "تحس إني أسمعك بقلبي؟",
+    "شو أسرع شي يعصبك مني؟",
+    "لو فيه عقد لعلاقتنا، شو أهم شرط؟",
+    "رسالة ودك تكتبها لي وما ترسلها؟",
+    "تحس نتطور مع بعض؟",
+    "شو أكثر شي يميزني عن غيري؟",
+    "كيف تتصرف لو كذبت عليك بموضوع كبير؟",
+    "شو العوض اللي شفته فيني؟",
+    "البعد يزيد الحب ولا ينهيه؟",
+    "شو يخليك تسامحني دايم؟",
+    "بكلمة، كيف توصف روحي؟",
+    "شو سؤال تخاف تسأله لي؟",
+    "تتوقع نكمل الـ100 سؤال؟"
+  ],
+  group3: [
+    "متى حسيت بأعلى فخر بنفسي؟",
+    "هل أنا النسخة اللي حلمت فيها قبل 5 سنين؟",
+    "شو دايم أسامح الناس عليه وما أسامح نفسي؟",
+    "متى آخر مرة قلت لا وأنا مقتنع؟",
+    "شو الكلمة اللي أحتاج أسمعها من نفسي اليوم؟",
+    "هل أهتم بصورتي قدام الناس أكثر من راحتي؟",
+    "شو أقسى درس تعلمته وكنت ممتن له؟",
+    "لو أرجع بالزمن، شو أنصح نفسي الصغيرة؟",
+    "شو الشي اللي يعطيني سلام داخلي؟",
+    "أعيش لنفسي ولا لإرضاء الناس؟",
+    "شو لو سويته اليوم نفسي المستقبلية بتشكرني؟",
+    "هل أتهرب من مواجهة حقيقتي؟",
+    "شو ذنب للحين يأنبني؟",
+    "أنا شخص سهل ولا أصعّب الأمور؟",
+    "موهبة عندي ودفنتها بسبب كلام الناس؟",
+    "أحب الشخص اللي أشوفه بالمراية؟",
+    "شو معنى النجاح بالنسبة لي؟",
+    "متى آخر مرة بكيت من قلبي؟",
+    "شو يخليني أحس إني أستاهل؟",
+    "أعيش عشان أشتغل ولا أشتغل عشان أعيش؟",
+    "وين المكان اللي أحس فيه إني أنا؟",
+    "لو عشت سنة بعزلة، أقدر؟",
+    "شو فكرة تمنعني من النوم؟",
+    "هل أنا كريم مع نفسي؟",
+    "شو أكبر كذبة أقنع فيها نفسي؟",
+    "شو لو خسرته أفقد هويتي؟",
+    "أخاف من الفشل ولا من كلام الناس؟",
+    "متى آخر مرة جربت شي لأول مرة؟",
+    "شو اللي يميزني عن غيري؟",
+    "أنا أتحكم بحياتي ولا الظروف؟",
+    "شو عادة تقتل طاقتي؟",
+    "أسامح غيري أسرع من نفسي؟",
+    "متى أحس بالوحدة وأنا بين الناس؟",
+    "لو حياتي كتاب، شو عنوان الفصل الحالي؟",
+    "شو أكبر ندم حالي؟",
+    "أهتم بالكم ولا الكيف بعلاقاتي؟",
+    "شو يخليني أبتسم وأنا لحالي؟",
+    "هل أنتظر حياتي تبدأ؟",
+    "شو ودي أقوله لأمي أو أبوي وما قدرت؟",
+    "راضي عن وقتي؟",
+    "شو قوة عندي وما أستخدمها؟",
+    "لو قابلت نفسي طفل، بيحبني؟",
+    "شو يخليني أفقد أعصابي؟",
+    "أبحث عن الكمال؟",
+    "شو معنى السعادة لي؟",
+    "متى شكرت نفسي آخر مرة؟",
+    "أعرف أودّع الأشياء المؤذية؟",
+    "شو ودي الناس تتذكره عني؟",
+    "هل أنا سجين الماضي؟",
+    "لو أبدأ من جديد، شو أغير؟",
+    "أنا انطوائي متخفي؟",
+    "شو الخوف اللي يوقفني؟",
+    "متى حسيت إني غريب عن نفسي؟",
+    "أحب نفسي كفاية؟",
+    "شو صفة أخفيها عن العالم؟",
+    "أركض ورا اللي يسعدني فعلاً؟",
+    "شو الصوت اللي داخلي دايم؟",
+    "متى سامحت نفسي بصدق؟",
+    "أنا مبادر ولا أنتظر؟",
+    "شو الأثر اللي أبي أتركه؟",
+    "راضي عن علاقتي بربي؟",
+    "شو يحسسني بالنقص؟",
+    "أهتم برأي الناس أكثر من قناعاتي؟",
+    "متى كنت شجاع فعلاً؟",
+    "شو قرار غير حياتي؟",
+    "أواجه مشاكلي ولا أهرب؟",
+    "شو يحسسني بالانتماء؟",
+    "أعرف وش أبي من الحياة؟",
+    "متى احتجت مساعدة؟",
+    "شو سر ما قلته لأحد؟",
+    "أنا عاطفي ولا عقلاني؟",
+    "شو يحسسني بالقوة؟",
+    "أستمتع بوقتي لحالي؟",
+    "متى خذلت نفسي؟",
+    "شو حلم تخليت عنه؟",
+    "أثق بحدسي؟",
+    "شو يغضبني بشدة؟",
+    "أتعلم من أخطائي؟",
+    "متى حسيت إني مظلوم؟",
+    "شو مبدأ مستحيل أتركه؟",
+    "أنا متفائل بطبعي؟",
+    "شو ممتن له اليوم؟",
+    "أعيش بالماضي ولا المستقبل؟",
+    "متى حسيت إني محبوب بصدق؟",
+    "شو عيب أحاول أصلحه؟",
+    "أعطي أكثر مما آخذ؟",
+    "شو يمللني بالحياة؟",
+    "أثق بالناس بسهولة؟",
+    "متى حسيت إني ناجح فعلاً؟",
+    "شو هدفي للسنة الجاية؟",
+    "أنا مرن مع التغيير؟",
+    "شو يحسسني بالخجل؟",
+    "أجامل على حساب راحتي؟",
+    "متى حسيت بالهدوء النفسي؟",
+    "شو ندم يلاحقني؟",
+    "فخور بعائلتي؟",
+    "شو يحسسني بالحيوية؟",
+    "أحب شغلي؟",
+    "متى تغيرت للأفضل؟",
+    "لو كانت آخر لحظة بحياتي… أنا راضي؟"
+  ]
+};
+
+let currentGroup = [];
+let totalQuestions = 0;
+let answeredQuestions = 0;
+
+// Game state
+let player1Name = "";
+let player2Name = "";
+let player1Choice = "";
+let player2Choice = "";
+let currentTurn = 1; // 1 for player1, 2 for player2
+let winner = "";
+
+function selectChoice(player, choice) {
+  console.log(`Player ${player} selected: ${choice}`);
+  
+  // Remove selected class ONLY from buttons of THIS specific player
+  const playerButtons = document.querySelectorAll(`.choice-btn[data-player="${player}"]`);
+  playerButtons.forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  
+  // Add selected to the clicked button
+  const selectedBtn = document.querySelector(`.choice-btn[data-player="${player}"][data-choice="${choice}"]`);
+  if (selectedBtn) {
+    selectedBtn.classList.add('selected');
   }
   
-  .action-btn:hover {
-    transform: none;
+  // Store choice
+  if (player === 1) {
+    player1Choice = choice;
+    console.log('Player 1 choice saved:', player1Choice);
+  } else {
+    player2Choice = choice;
+    console.log('Player 2 choice saved:', player2Choice);
   }
+  
+  console.log('Current state - P1:', player1Choice, 'P2:', player2Choice);
+  
+  // Check if both players have made their choices and entered names
+  checkFlipButton();
 }
 
-/* Landscape mobile */
-@media (max-height: 500px) and (orientation: landscape) {
-  .container {
-    padding: 12px;
+function checkFlipButton() {
+  player1Name = document.getElementById('player1').value.trim();
+  player2Name = document.getElementById('player2').value.trim();
+  
+  const flipBtn = document.getElementById('flipBtn');
+  
+  // Check if all required data is present
+  if (!player1Name || !player2Name || !player1Choice || !player2Choice) {
+    flipBtn.disabled = true;
+    return;
+  }
+  
+  // Check if choices are different
+  if (player1Choice === player2Choice) {
+    flipBtn.disabled = true;
+    // Show error message temporarily
+    const errorMsg = document.createElement('div');
+    errorMsg.style.cssText = 'color: #e74c3c; text-align: center; margin-top: 12px; font-weight: 600; font-size: 14px;';
+    errorMsg.textContent = '⚠️ لازم كل لاعب يختار جهة مختلفة!';
+    errorMsg.id = 'error-msg';
+    
+    // Remove old error if exists
+    const oldError = document.getElementById('error-msg');
+    if (oldError) oldError.remove();
+    
+    // Add error after flip button
+    flipBtn.parentElement.insertBefore(errorMsg, flipBtn.nextSibling);
+    
+    // Remove error after 3 seconds
+    setTimeout(() => {
+      if (document.getElementById('error-msg')) {
+        document.getElementById('error-msg').remove();
+      }
+    }, 3000);
+    
+    return;
+  }
+  
+  // Remove error message if exists
+  const errorMsg = document.getElementById('error-msg');
+  if (errorMsg) errorMsg.remove();
+  
+  // Enable button
+  flipBtn.disabled = false;
+}
+
+// Initialize when page loads
+window.addEventListener('DOMContentLoaded', function() {
+  const player1Input = document.getElementById('player1');
+  const player2Input = document.getElementById('player2');
+  
+  if (player1Input && player2Input) {
+    player1Input.addEventListener('input', checkFlipButton);
+    player2Input.addEventListener('input', checkFlipButton);
+  }
+});
+
+function flipCoin() {
+  const flipBtn = document.getElementById('flipBtn');
+  const coinAnimation = document.getElementById('coinAnimation');
+  const resultDiv = document.getElementById('result');
+  const coin = coinAnimation.querySelector('.coin');
+  
+  // Disable button during flip
+  flipBtn.disabled = true;
+  flipBtn.style.opacity = '0.5';
+  
+  // Show coin
+  coinAnimation.classList.remove('hidden');
+  resultDiv.classList.add('hidden');
+  
+  // Remove any existing continue button
+  const existingBtn = document.querySelector('.flip-card > .flip-btn:last-of-type');
+  if (existingBtn && existingBtn.textContent.includes('يلا نبدأ')) {
+    existingBtn.remove();
+  }
+  
+  // Reset coin state
+  coin.classList.remove('flipping');
+  coin.style.transform = '';
+  
+  // Start flip animation after small delay
+  setTimeout(() => {
+    coin.classList.add('flipping');
+  }, 100);
+  
+  // Determine result (50/50)
+  const result = Math.random() < 0.5 ? 'راس' : 'ذيل';
+  
+  // After animation completes
+  setTimeout(() => {
+    coin.classList.remove('flipping');
+    
+    // Set final rotation based on result
+    if (result === 'راس') {
+      coin.style.transform = 'rotateY(0deg)';
+    } else {
+      coin.style.transform = 'rotateY(180deg)';
+    }
+    
+    // Determine winner
+    if (player1Choice === result) {
+      winner = player1Name;
+      currentTurn = 1;
+    } else {
+      winner = player2Name;
+      currentTurn = 2;
+    }
+    
+    // Show result
+    setTimeout(() => {
+      resultDiv.innerHTML = `
+        <div style="font-size: 48px; margin-bottom: 12px;">${result === 'راس' ? '👑' : '⭐'}</div>
+        <div style="font-size: 22px; margin-bottom: 8px;"><strong>${result}</strong></div>
+        <div style="margin-top: 12px; font-size: 24px;">🎉 ${winner} يبدأ!</div>
+      `;
+      resultDiv.classList.remove('hidden');
+      resultDiv.classList.add('winner');
+      
+      // Show continue button
+      setTimeout(() => {
+        const continueBtn = document.createElement('button');
+        continueBtn.className = 'flip-btn';
+        continueBtn.style.marginTop = '16px';
+        continueBtn.innerHTML = '🎮 يلا نبدأ اللعب!';
+        continueBtn.onclick = showGroups;
+        flipBtn.parentElement.appendChild(continueBtn);
+      }, 800);
+    }, 400);
+    
+  }, 2000);
+}
+
+function showGroups() {
+  document.getElementById('coinFlip').style.display = 'none';
+  document.getElementById('groups').classList.remove('hidden');
+  document.getElementById('groups').style.display = 'flex';
+}
+
+function selectGroup(group) {
+  currentGroup = [...questions[group]];
+  totalQuestions = currentGroup.length;
+  answeredQuestions = 0;
+
+  document.getElementById("groups").style.display = "none";
+  document.getElementById("card").classList.remove("hidden");
+
+  document.body.className = "";
+  const card = document.getElementById("card");
+  card.className = "card";
+
+  if (group === "group1") {
+    document.body.classList.add("bg-fun");
+    card.classList.add("card-fun");
+  } else if (group === "group2") {
+    document.body.classList.add("bg-deep");
+    card.classList.add("card-deep");
+  } else if (group === "group3") {
+    document.body.classList.add("bg-self");
+    card.classList.add("card-self");
   }
 
-  .title {
-    font-size: 24px;
-    margin-bottom: 20px;
+  nextQuestion();
+}
+
+function nextQuestion() {
+  if (currentGroup.length === 0) {
+    document.getElementById("question").innerText = "🎉 خلصت الأسئلة! أحسنتم";
+    document.getElementById("counter").innerText = "";
+    document.getElementById("turnPlayer").innerText = "";
+    updateProgress(100);
+    return;
   }
 
-  .question-container {
-    min-height: 120px;
-  }
+  const index = Math.floor(Math.random() * currentGroup.length);
+  const question = currentGroup.splice(index, 1)[0];
+  
+  // Update turn display
+  const currentPlayerName = currentTurn === 1 ? player1Name : player2Name;
+  const otherPlayerName = currentTurn === 1 ? player2Name : player1Name;
+  document.getElementById("turnPlayer").innerHTML = `
+    <span style="font-size: 20px;">🎯</span> 
+    دور <strong>${otherPlayerName}</strong> يسأل <strong>${currentPlayerName}</strong>
+  `;
+  
+  const questionElement = document.getElementById("question");
+  questionElement.style.opacity = "0";
+  
+  setTimeout(() => {
+    questionElement.innerText = question;
+    questionElement.style.opacity = "1";
+  }, 150);
 
-  .card {
-    padding: 24px 20px;
+  answeredQuestions++;
+  updateProgress((answeredQuestions / totalQuestions) * 100);
+  updateCounter();
+  
+  // Switch turn
+  currentTurn = currentTurn === 1 ? 2 : 1;
+}
+
+function updateProgress(percentage) {
+  const progressBar = document.getElementById("progress");
+  progressBar.style.width = percentage + "%";
+}
+
+function updateCounter() {
+  const counter = document.getElementById("counter");
+  counter.innerText = `السؤال ${answeredQuestions} من ${totalQuestions}`;
+}
+
+function resetGame() {
+  // Reset to coin flip
+  document.getElementById("card").classList.add("hidden");
+  document.body.className = "";
+  
+  // Reset all values
+  currentGroup = [];
+  answeredQuestions = 0;
+  totalQuestions = 0;
+  player1Name = "";
+  player2Name = "";
+  player1Choice = "";
+  player2Choice = "";
+  currentTurn = 1;
+  winner = "";
+  
+  // Clear inputs
+  document.getElementById('player1').value = "";
+  document.getElementById('player2').value = "";
+  
+  // Clear selections
+  document.querySelectorAll('.choice-btn').forEach(btn => {
+    btn.classList.remove('selected');
+  });
+  
+  // Hide coin animation and result
+  const coinAnimation = document.getElementById('coinAnimation');
+  const coin = coinAnimation.querySelector('.coin');
+  coinAnimation.classList.add('hidden');
+  coin.classList.remove('flipping');
+  coin.style.transform = '';
+  
+  document.getElementById('result').classList.add('hidden');
+  document.getElementById('result').innerHTML = "";
+  
+  // Remove ALL extra buttons
+  const allButtons = document.querySelectorAll('.flip-card > .flip-btn');
+  allButtons.forEach((btn, index) => {
+    if (index > 0) { // Keep only first button (the original flip button)
+      btn.remove();
+    }
+  });
+  
+  // Reset flip button
+  const flipBtn = document.getElementById('flipBtn');
+  flipBtn.disabled = true;
+  flipBtn.style.opacity = '';
+  
+  // Show coin flip screen
+  document.getElementById('coinFlip').style.display = 'block';
+  document.getElementById('groups').style.display = 'none';
+}
+
+// Prevent pull-to-refresh on mobile
+document.body.addEventListener('touchmove', function(e) {
+  if (e.touches.length > 1) {
+    e.preventDefault();
   }
+}, { passive: false });
+
+// Add haptic feedback for buttons (if supported)
+if ('vibrate' in navigator) {
+  document.addEventListener('click', function(e) {
+    if (e.target.tagName === 'BUTTON') {
+      navigator.vibrate(10);
+    }
+  });
 }
