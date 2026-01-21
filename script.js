@@ -350,43 +350,38 @@ updateVisitorCount();
 
 function selectChoice(player, choice) {
   console.log(`=== selectChoice START ===`);
-  console.log(`Player ${player} selected: ${choice}`);
+  console.log(`Player: ${player}, Choice: ${choice}`);
   
-  // Remove selected class from ALL buttons of THIS specific player
-  const playerButtons = document.querySelectorAll(`.choice-btn[data-player="${player}"]`);
-  console.log(`Found ${playerButtons.length} buttons for player ${player}`);
+  // Remove data-selected from ALL buttons of this player
+  const allPlayerButtons = document.querySelectorAll(`.choice-btn[data-player="${player}"]`);
+  console.log(`Found ${allPlayerButtons.length} buttons for player ${player}`);
   
-  playerButtons.forEach(btn => {
+  allPlayerButtons.forEach(btn => {
+    btn.removeAttribute('data-selected');
     btn.classList.remove('selected');
-    console.log('Removed selected from:', btn);
   });
   
-  // Add selected to the clicked button
-  const selectedBtn = document.querySelector(`.choice-btn[data-player="${player}"][data-choice="${choice}"]`);
-  console.log('Target button:', selectedBtn);
+  // Add data-selected to the clicked button
+  const targetBtn = document.querySelector(`.choice-btn[data-player="${player}"][data-choice="${choice}"]`);
   
-  if (selectedBtn) {
-    selectedBtn.classList.add('selected');
-    console.log('✅ Added selected class successfully');
-    console.log('Button classes:', selectedBtn.className);
+  if (targetBtn) {
+    targetBtn.setAttribute('data-selected', 'true');
+    targetBtn.classList.add('selected');
+    console.log('✅ Button marked as selected');
   } else {
-    console.error('❌ Could not find button!');
+    console.error('❌ Button not found!');
   }
   
   // Store choice
   if (player === 1) {
     player1Choice = choice;
-    console.log('Player 1 choice saved:', player1Choice);
   } else {
     player2Choice = choice;
-    console.log('Player 2 choice saved:', player2Choice);
   }
   
-  console.log('Current state - P1:', player1Choice, 'P2:', player2Choice);
-  
-  // Check if both players have made their choices and entered names
+  console.log(`State: P1="${player1Choice}", P2="${player2Choice}"`);
   checkFlipButton();
-  console.log(`=== selectChoice END ===\n`);
+  console.log(`=== END ===\n`);
 }
 
 function checkFlipButton() {
