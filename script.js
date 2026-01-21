@@ -474,3 +474,105 @@ function updateVisitorCount() {
   if (document.getElementById('visitorCount')) document.getElementById('visitorCount').textContent = count;
 }
 updateVisitorCount();
+
+function showGroups() {
+  // إخفاء شاشة القرعة تماماً
+  const coinFlip = document.getElementById('coinFlip');
+  coinFlip.style.display = 'none'; 
+  coinFlip.classList.add('hidden');
+
+  // إظهار شاشة المجموعات
+  const groups = document.getElementById('groups');
+  groups.classList.remove('hidden');
+  groups.style.display = 'flex';
+
+  // إعادة الصفحة للأعلى لضمان عدم وجود سكرول عالق
+  window.scrollTo(0, 0);
+  document.querySelector('.title').textContent = "🎴 اختر المجموعة";
+}
+
+function selectGroup(group) {
+  currentGroup = [...questions[group]];
+  totalQuestions = currentGroup.length;
+  answeredQuestions = 0;
+  
+  prize = document.getElementById('prizeInput') ? document.getElementById('prizeInput').value.trim() : "";
+
+  // إخفاء المجموعات تماماً
+  const groupsDiv = document.getElementById("groups");
+  groupsDiv.style.display = "none";
+  groupsDiv.classList.add("hidden");
+
+  // إظهار بطاقة الأسئلة
+  const card = document.getElementById("card");
+  card.classList.remove("hidden");
+  card.style.display = "block";
+
+  // تغيير الخلفية بناءً على المجموعة
+  document.body.className = ""; 
+  if (group === "group1") document.body.classList.add("bg-fun");
+  else if (group === "group2") document.body.classList.add("bg-deep");
+  else if (group === "group3") document.body.classList.add("bg-self");
+
+  window.scrollTo(0, 0);
+  updatePointsDisplay();
+  nextQuestion();
+}
+// إضافة دالة لإيقاف المؤقت عند الإجابة
+function answerQuestion() {
+    if (timerRunning) {
+        stopTimer();
+        alert("✅ تم تسجيل الإجابة! انتقل للسؤال التالي.");
+    }
+}
+
+// تعديل دالة انتهاء الوقت لخصم النقاط
+function handleTimeUp() {
+    // خصم نقطة من اللاعب الذي عليه الدور (الذي يُسأل)
+    // لاحظ أن الدور يتبدل في نهاية nextQuestion، لذا نخصم من اللاعب الحالي
+    if (currentTurn === 2) { // لأن الدور تبدل لـ 2 بعد طرح السؤال لـ 1
+        player1Points = Math.max(0, player1Points - 1);
+    } else {
+        player2Points = Math.max(0, player2Points - 1);
+    }
+    
+    updatePointsDisplay();
+    alert("⏰ انتهى الوقت! خصم نقطة من اللاعب.");
+    checkGameOver();
+}
+
+// دالة الامتناع عن الجواب
+function skipQuestion() {
+    stopTimer();
+    if (currentTurn === 2) {
+        player1Points = Math.max(0, player1Points - 1);
+    } else {
+        player2Points = Math.max(0, player2Points - 1);
+    }
+    
+    updatePointsDisplay();
+    alert("🚫 تم الامتناع عن الجواب! خصم نقطة.");
+    checkGameOver();
+    if (player1Points > 0 && player2Points > 0) {
+        nextQuestion();
+    }
+}
+
+// التحقق من نهاية اللعبة
+function checkGameOver() {
+    if (player1Points <= 0 || player2Points <= 0 || currentGroup.length === 0) {
+        stopTimer();
+        let winnerName = "";
+        if (player1Points > player2Points) winnerName = player1Name;
+        else if (player2Points > player1Points) winnerName = player2Name;
+        else winnerName = "تعادل!";
+
+        const msg = winnerName === "تعادل!" ? "انتهت اللعبة بالتعادل!" : `🎉 الفائز هو: ${winnerName}`;
+        document.getElementById("question").innerHTML = `<div style='text-align:center'>${msg}<br>النقاط النهائية:<br>${player1Name}: ${player1Points}<br>${player2Name}: ${player2Points}</div>`;
+        
+        // إخفاء الأزرار غير الضرورية
+        document.querySelector(".buttons-container").innerHTML = `<button class="action-btn reset-btn" onclick="resetGame()">لعبة جديدة ↺</button>`;
+        return true;
+    }
+    return false;
+}
