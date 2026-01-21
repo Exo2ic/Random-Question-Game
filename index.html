@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+  <title>🎴 لعبة الأسئلة</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="title">🎴 لعبة الأسئلة</h1>
+
+    <!-- Coin Flip Screen -->
+    <div id="coinFlip">
+      <div class="flip-card">
+        <h2 class="flip-title">من يبدأ؟ 🪙</h2>
+        
+        <!-- Prize Input -->
+        <div class="prize-section">
+          <label class="prize-label">🎁 الخسران يعزم على:</label>
+          <input type="text" id="prizeInput" class="prize-input" placeholder="قهوة، عشا، رحلة... الخ" maxlength="50">
+        </div>
+        
+        <div class="players-container">
+          <!-- Player 1 -->
+          <div class="player-box">
+            <label class="player-label">اللاعب الأول</label>
+            <input type="text" id="player1" class="player-name-input" placeholder="اكتب اسمك..." maxlength="15">
+            <div class="choice-grid">
+              <button class="choice-btn" data-player="1" data-choice="تاج">
+                <span class="emoji">👑</span>
+                <span class="text">تاج</span>
+              </button>
+              <button class="choice-btn" data-player="1" data-choice="نجمة">
+                <span class="emoji">⭐</span>
+                <span class="text">نجمة</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="vs-text">VS</div>
+
+          <!-- Player 2 -->
+          <div class="player-box">
+            <label class="player-label">اللاعب الثاني</label>
+            <input type="text" id="player2" class="player-name-input" placeholder="اكتب اسمك..." maxlength="15">
+            <div class="choice-grid">
+              <button class="choice-btn" data-player="2" data-choice="تاج">
+                <span class="emoji">👑</span>
+                <span class="text">تاج</span>
+              </button>
+              <button class="choice-btn" data-player="2" data-choice="نجمة">
+                <span class="emoji">⭐</span>
+                <span class="text">نجمة</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button id="flipBtn" class="flip-btn" disabled>
+          🪙 ارمي العملة
+        </button>
+
+        <div id="coinAnimation" class="coin-animation hidden">
+          <div class="coin">
+            <div class="coin-side heads">👑</div>
+            <div class="coin-side tails">⭐</div>
+          </div>
+        </div>
+
+        <div id="result" class="result-text hidden"></div>
+      </div>
+    </div>
+
+    <!-- Groups Selection -->
+    <div id="groups" class="groups-container hidden">
+      <button class="group-btn" onclick="selectGroup('group1')">
+        <span class="emoji">🎭</span>
+        <span class="group-title">ما بينا غريب</span>
+        <span class="group-desc">أسئلة خفيفة ومضحكة</span>
+      </button>
+
+      <button class="group-btn" onclick="selectGroup('group2')">
+        <span class="emoji">💭</span>
+        <span class="group-title">خلّنا واقعيين</span>
+        <span class="group-desc">أسئلة عميقة وجدية</span>
+      </button>
+
+      <button class="group-btn" onclick="selectGroup('group3')">
+        <span class="emoji">✨</span>
+        <span class="group-title">مني وإليّ</span>
+        <span class="group-desc">النفس والذات</span>
+      </button>
+    </div>
+
+    <!-- Game Card -->
+    <div id="card" class="card hidden">
+      <!-- Points Tracker -->
+      <div class="points-tracker">
+        <div class="player-points">
+          <span class="points-label" id="player1Label"></span>
+          <span class="points-value" id="player1Points">5</span>
+        </div>
+        <div class="prize-display" id="prizeDisplay"></div>
+        <div class="player-points">
+          <span class="points-label" id="player2Label"></span>
+          <span class="points-value" id="player2Points">5</span>
+        </div>
+      </div>
+
+      <!-- Timer -->
+      <div class="timer-container">
+        <div class="timer-circle" id="timerCircle">
+          <span class="timer-text" id="timerText">30</span>
+        </div>
+      </div>
+
+      <div class="turn-indicator">
+        <div class="turn-player" id="turnPlayer"></div>
+      </div>
+      
+      <div class="question-container">
+        <p id="question" class="question-text"></p>
+      </div>
+      
+      <div class="buttons-container">
+        <button class="action-btn stop-timer-btn" id="stopTimerBtn" onclick="stopTimer()">
+          <span>⏸️ توقف</span>
+        </button>
+        <button class="action-btn pass-btn" onclick="passQuestion()">
+          <span>🚫 امتنع (-2)</span>
+        </button>
+        <button class="action-btn next-btn" onclick="nextQuestion()">
+          <span>سؤال جديد</span>
+          <span class="btn-icon">→</span>
+        </button>
+        <button class="action-btn reset-btn" onclick="resetGame()">
+          <span>تغيير المجموعة</span>
+          <span class="btn-icon">↺</span>
+        </button>
+      </div>
+      
+      <div class="progress-bar">
+        <div id="progress" class="progress-fill"></div>
+      </div>
+      <p id="counter" class="counter-text"></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <!-- Visitor Counter -->
+      <div class="visitor-counter">
+        <span class="visitor-icon">👥</span>
+        <span>عدد الزوار: <strong id="visitorCount">0</strong></span>
+      </div>
+      
+      <div class="coded-by">
+        <span class="code-icon">{'</>'}</span>
+        <span>Coded by <strong>0xCC</strong></span>
+      </div>
+
+      <div class="social-links">
+        <a href="https://github.com/exo2ic" target="_blank" rel="noopener" class="social-link">
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
