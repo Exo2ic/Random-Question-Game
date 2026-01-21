@@ -3,6 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>لعبة الأسئلة 🎴</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body id="body">
+
+  <div class="container">
+    <h1 class="title">🎴 لعبة الأسئلة</h1>
+
+    <div id="coinFlip" class="coin-flip-container">
+      <div class="flip-card">
+        <h2 class="flip-title">من يبدأ؟ 🪙</h2>
+        
+        <div class="players-input">
+          <div class="player-input-group">
+            <label>اللاعب الأول</label>
+            <input type="text" id="player1" placeholder="اسمك..." oninput="checkFlipButton()">
+            <div class="choice-buttons">
+              <button class="choice-btn" data-player="1" data-choice="تاج" onclick="selectChoice(1, 'تاج')">👑 تاج</button>
+              <button class="choice-btn" data-player="1" data-choice="نجمة" onclick="selectChoice(1, 'نجمة')">⭐ نجمة</button>
+            </div>
+          </div>
+
+          <div class="vs-divider">VS</div>
+
+          <div class="player-input-group">
+            <label>اللاعب الثاني</label>
+            <input type="text" id="player2" placeholder="اسمك..." oninput="checkFlipButton()">
+            <div class="choice-buttons">
+              <button class="choice-btn" data-player="2" data-choice="تاج" onclick="selectChoice(2, 'تاج')">👑 تاج</button>
+              <button class="choice-btn" data-player="2" data-choice="نجمة" onclick="selectChoice(2, 'نجمة')">⭐ نجمة</button>
+            </div>
+          </div>
+
+          <div class="player-input-group">
+            <label>شو الجائزة؟ (اختياري)</label>
+            <input type="text" id="prizeInput" placeholder="عشاء، هدية، الخ...">
+          </div>
+        </div>
+
+        <button id="flipBtn" class="flip-btn" onclick="flipCoin()" disabled>🪙 ارمي العملة</button>
+
+        <div id="coinAnimation" class="coin-animation hidden">
+          <div class="coin">
+            <div class="coin-side heads">👑</div>
+            <div class="coin-side tails">⭐</div>
+          </div>
+        </div>
+
+        <div id="result" class="result-text hidden"></div>
+      </div>
+    </div>
+
+    <div id="groups" class="groups-container hidden">
+      <button class="group-btn group-btn-1" onclick="selectGroup('group1')">
+        <span class="emoji">🎭</span>
+        <span class="group-title">ما بينا غريب</span>
+      </button>
+      <button class="group-btn group-btn-2" onclick="selectGroup('group2')">
+        <span class="emoji">💭</span>
+        <span class="group-title">خلّنا واقعيين</span>
+      </button>
+      <button class="group-btn group-btn-3" onclick="selectGroup('group3')">
+        <span class="emoji">✨</span>
+        <span class="group-title">مني وإليّ</span>
+      </button>
+    </div>
+
+    <div id="card" class="card hidden">
+      <div class="points-tracker">
+        <div class="player-points">
+          <span id="player1Label">P1</span>: <span id="player1Points">5</span> ❤️
+        </div>
+        <div class="prize-display" id="prizeDisplay"></div>
+        <div class="player-points">
+          <span id="player2Label">P2</span>: <span id="player2Points">5</span> ❤️
+        </div>
+      </div>
+
+      <div class="timer-container">
+        <div class="timer-circle"><span id="timerText">30</span></div>
+      </div>
+
+      <div class="turn-indicator"><div id="turnPlayer"></div></div>
+      <div class="question-container"><p id="question" class="question-text"></p></div>
+      
+      <div class="buttons-container">
+        <button class="action-btn next-btn" onclick="nextQuestion()">سؤال جديد ➡️</button>
+        <button class="action-btn reset-btn" onclick="resetGame()">تغيير المجموعة ↺</button>
+      </div>
+
+      <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+      <p id="counter" class="counter-text"></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <p>زوارنا: <span id="visitorCount">0</span></p>
+      <p>Coded by <strong>0xCC</strong></p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
