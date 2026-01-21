@@ -1,3 +1,4 @@
+// 1. التعريفات الأساسية (تم جمعها ومنع التكرار)
 const questions = {
   group1: [
     "شو الموقف اللي لين الحين إذا تذكرته تضحك على نفسك من قلب؟",
@@ -176,7 +177,7 @@ const questions = {
     "المال يغير النفوس؟",
     "شو الاعتراف اللي ودك تقوله الحين؟",
     "تحس إني أقيدك؟",
-    "شو يخليك تطمّن لي؟",
+    "شو يخليك تطمّن لي? ",
     "كيف تتعامل مع صمتي إذا تضايقت؟",
     "شو تضحية تنتظرها مني؟",
     "تحس نستحق بعض؟",
@@ -286,7 +287,7 @@ const questions = {
     "شو مبدأ مستحيل أتركه؟",
     "أنا متفائل بطبعي؟",
     "شو ممتن له اليوم؟",
-    "أعيش بالماضي ولا المستقبل؟",
+    "أعيش بالماضي ولا المستقبل? ",
     "متى حسيت إني محبوب بصدق؟",
     "شو عيب أحاول أصلحه؟",
     "أعطي أكثر مما آخذ؟",
@@ -307,496 +308,150 @@ const questions = {
   ]
 };
 
-let currentGroup = [];
-let totalQuestions = 0;
-let answeredQuestions = 0;
-
-// Game state
-let player1Name = "";
-let player2Name = "";
-let player1Choice = "";
-let player2Choice = "";
-let currentTurn = 1; // 1 for player1, 2 for player2
+// حالة اللعبة (تم توحيد المتغيرات)
+let player1Name = "", player2Name = "";
+let player1Choice = "", player2Choice = "";
+let currentTurn = 1;
 let winner = "";
-
-// Points and timer system
-let player1Points = 5;
-let player2Points = 5;
+let player1Points = 5, player2Points = 5;
 let prize = "";
-let timerInterval = null;
-let timeLeft = 30;
-let timerRunning = false;
-
-// Questions tracking
 let currentGroup = [];
-let answeredQuestions = 0;
-let totalQuestions = 0;
+let totalQuestions = 0, answeredQuestions = 0;
+let timerInterval = null, timeLeft = 30, timerRunning = false;
 
-// Visitor counter
-function updateVisitorCount() {
-  let count = localStorage.getItem('visitorCount');
-  if (!count) {
-    count = Math.floor(Math.random() * 500) + 100; // Start with random number
-  }
-  count = parseInt(count) + 1;
-  localStorage.setItem('visitorCount', count);
-  if (document.getElementById('visitorCount')) {
-    document.getElementById('visitorCount').textContent = count;
-  }
-}
-
-// Initialize visitor counter on page load
-updateVisitorCount();
-
+// 2. دوال الاختيار والقرعة
 function selectChoice(player, choice) {
-  console.log(`=== selectChoice called ===`);
-  console.log(`Player: ${player}, Choice: ${choice}`);
-  
-  // Get ALL choice buttons for this player
   const allPlayerButtons = document.querySelectorAll(`.choice-btn[data-player="${player}"]`);
-  console.log(`Found ${allPlayerButtons.length} buttons for player ${player}`);
+  allPlayerButtons.forEach(btn => btn.classList.remove('selected'));
   
-  // Reset ALL buttons for this player to default style
-  allPlayerButtons.forEach(btn => {
-    btn.classList.remove('selected');
-    // Reset to default white background
-    btn.style.background = 'rgba(255, 255, 255, 0.9)';
-    btn.style.border = '2px solid rgba(138, 43, 226, 0.4)';
-    btn.style.color = '#2d3436';
-    btn.style.boxShadow = 'none';
-    btn.style.transform = 'none';
-  });
-  
-  // Find the clicked button
   const clickedButton = document.querySelector(`.choice-btn[data-player="${player}"][data-choice="${choice}"]`);
-  console.log('Clicked button:', clickedButton);
+  if (clickedButton) clickedButton.classList.add('selected');
   
-  if (clickedButton) {
-    // Apply selected styles directly with inline CSS
-    clickedButton.classList.add('selected');
-    clickedButton.style.background = 'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)';
-    clickedButton.style.border = '3px solid #6c5ce7';
-    clickedButton.style.color = 'white';
-    clickedButton.style.boxShadow = '0 6px 20px rgba(108, 92, 231, 0.5), 0 0 0 4px rgba(108, 92, 231, 0.4)';
-    clickedButton.style.transform = 'scale(1.05)';
-    
-    // Make text white too
-    const textSpans = clickedButton.querySelectorAll('span');
-    textSpans.forEach(span => {
-      span.style.color = 'white';
-    });
-    
-    console.log('✅ Styles applied successfully');
-  } else {
-    console.error('❌ Button not found!');
-  }
+  if (player === 1) player1Choice = choice;
+  else player2Choice = choice;
   
-  // Store choice
-  if (player === 1 || player === '1') {
-    player1Choice = choice;
-    console.log('Player 1 choice:', player1Choice);
-  } else {
-    player2Choice = choice;
-    console.log('Player 2 choice:', player2Choice);
-  }
-  
-  console.log(`Current state - P1: "${player1Choice}", P2: "${player2Choice}"`);
   checkFlipButton();
 }
-
 
 function checkFlipButton() {
   player1Name = document.getElementById('player1').value.trim();
   player2Name = document.getElementById('player2').value.trim();
-  
   const flipBtn = document.getElementById('flipBtn');
   
-  // Check if all required data is present
-  if (!player1Name || !player2Name || !player1Choice || !player2Choice) {
+  if (player1Name && player2Name && player1Choice && player2Choice && (player1Choice !== player2Choice)) {
+    flipBtn.disabled = false;
+  } else {
     flipBtn.disabled = true;
-    return;
   }
-  
-  // Check if choices are different
-  if (player1Choice === player2Choice) {
-    flipBtn.disabled = true;
-    // Show error message temporarily
-    const errorMsg = document.createElement('div');
-    errorMsg.style.cssText = 'color: #e74c3c; text-align: center; margin-top: 12px; font-weight: 600; font-size: 14px;';
-    errorMsg.textContent = '⚠️ لازم كل لاعب يختار جهة مختلفة!';
-    errorMsg.id = 'error-msg';
-    
-    // Remove old error if exists
-    const oldError = document.getElementById('error-msg');
-    if (oldError) oldError.remove();
-    
-    // Add error after flip button
-    flipBtn.parentElement.insertBefore(errorMsg, flipBtn.nextSibling);
-    
-    // Remove error after 3 seconds
-    setTimeout(() => {
-      if (document.getElementById('error-msg')) {
-        document.getElementById('error-msg').remove();
-      }
-    }, 3000);
-    
-    return;
-  }
-  
-  // Remove error message if exists
-  const errorMsg = document.getElementById('error-msg');
-  if (errorMsg) errorMsg.remove();
-  
-  // Enable button
-  flipBtn.disabled = false;
 }
-
-// Initialize when page loads
-window.addEventListener('DOMContentLoaded', function() {
-  const player1Input = document.getElementById('player1');
-  const player2Input = document.getElementById('player2');
-  
-  if (player1Input && player2Input) {
-    player1Input.addEventListener('input', checkFlipButton);
-    player2Input.addEventListener('input', checkFlipButton);
-  }
-});
 
 function flipCoin() {
   const flipBtn = document.getElementById('flipBtn');
   const coinAnimation = document.getElementById('coinAnimation');
   const resultDiv = document.getElementById('result');
-  const coin = coinAnimation.querySelector('.coin');
+  const coin = document.querySelector('.coin');
   
-  // Disable button during flip
   flipBtn.disabled = true;
-  flipBtn.style.opacity = '0.5';
-  
-  // Show coin
   coinAnimation.classList.remove('hidden');
   resultDiv.classList.add('hidden');
+  coin.classList.add('flipping');
   
-  // Remove any existing continue button
-  const existingBtn = document.querySelector('.flip-card > .flip-btn:last-of-type');
-  if (existingBtn && existingBtn.textContent.includes('يلا نبدأ')) {
-    existingBtn.remove();
-  }
+  // النتيجة: تاج أو نجمة (مطابق للـ HTML)
+  const result = Math.random() < 0.5 ? 'تاج' : 'نجمة';
   
-  // Reset coin state
-  coin.classList.remove('flipping');
-  coin.style.transform = '';
-  
-  // Start flip animation after small delay
-  setTimeout(() => {
-    coin.classList.add('flipping');
-  }, 100);
-  
-  // Determine result (50/50)
-  const result = Math.random() < 0.5 ? 'راس' : 'ذيل';
-  
-  // After animation completes
   setTimeout(() => {
     coin.classList.remove('flipping');
+    coin.style.transform = (result === 'تاج') ? 'rotateY(0deg)' : 'rotateY(180deg)';
     
-    // Set final rotation based on result
-    if (result === 'راس') {
-      coin.style.transform = 'rotateY(0deg)';
-    } else {
-      coin.style.transform = 'rotateY(180deg)';
-    }
+    winner = (player1Choice === result) ? player1Name : player2Name;
+    currentTurn = (player1Choice === result) ? 1 : 2;
     
-    // Determine winner
-    if (player1Choice === result) {
-      winner = player1Name;
-      currentTurn = 1;
-    } else {
-      winner = player2Name;
-      currentTurn = 2;
-    }
-    
-    // Show result
     setTimeout(() => {
       resultDiv.innerHTML = `
-        <div style="font-size: 48px; margin-bottom: 12px;">${result === 'راس' ? '👑' : '⭐'}</div>
-        <div style="font-size: 22px; margin-bottom: 8px;"><strong>${result}</strong></div>
-        <div style="margin-top: 12px; font-size: 24px;">🎉 ${winner} يبدأ!</div>
+        <div style="font-size: 40px; margin-bottom: 10px;">${result === 'تاج' ? '👑' : '⭐'}</div>
+        <div style="font-size: 20px;">النتيجة: <strong>${result}</strong></div>
+        <div style="margin-top: 10px; font-size: 22px;">🎉 ${winner} يبدأ!</div>
+        <button class="flip-btn" style="margin-top:15px;" onclick="showGroups()">يلا نبدأ اللعب! 🎮</button>
       `;
       resultDiv.classList.remove('hidden');
       resultDiv.classList.add('winner');
-      
-      // Show continue button
-      setTimeout(() => {
-        const continueBtn = document.createElement('button');
-        continueBtn.className = 'flip-btn';
-        continueBtn.style.marginTop = '16px';
-        continueBtn.innerHTML = '🎮 يلا نبدأ اللعب!';
-        continueBtn.onclick = showGroups;
-        flipBtn.parentElement.appendChild(continueBtn);
-      }, 800);
-    }, 400);
-    
+    }, 500);
   }, 2000);
 }
 
+// 3. دوال التنقل واللعب
 function showGroups() {
-  document.getElementById('coinFlip').style.display = 'none';
+  document.getElementById('coinFlip').classList.add('hidden');
   document.getElementById('groups').classList.remove('hidden');
-  document.getElementById('groups').style.display = 'flex';
-  
-  // Update title for groups selection
-  const titleElement = document.querySelector('.title');
-  titleElement.textContent = "🎴 اختر المجموعة";
+  document.querySelector('.title').textContent = "🎴 اختر المجموعة";
 }
 
 function selectGroup(group) {
   currentGroup = [...questions[group]];
   totalQuestions = currentGroup.length;
   answeredQuestions = 0;
-  
-  // Get prize from input
-  prize = document.getElementById('prizeInput').value.trim();
+  prize = document.getElementById('prizeInput') ? document.getElementById('prizeInput').value.trim() : "";
 
-  document.getElementById("groups").style.display = "none";
-  document.getElementById("card").classList.remove("hidden");
-
-  document.body.className = "";
+  document.getElementById("groups").classList.add("hidden");
   const card = document.getElementById("card");
-  card.className = "card";
+  card.classList.remove("hidden");
 
-  // Update title based on selected group
-  const titleElement = document.querySelector('.title');
+  // تغيير الثيم
+  document.body.className = "";
+  if (group === "group1") document.body.classList.add("bg-fun");
+  else if (group === "group2") document.body.classList.add("bg-deep");
+  else if (group === "group3") document.body.classList.add("bg-self");
   
-  if (group === "group1") {
-    document.body.classList.add("bg-fun");
-    card.classList.add("card-fun");
-    titleElement.textContent = "🎭 ما بينا غريب";
-  } else if (group === "group2") {
-    document.body.classList.add("bg-deep");
-    card.classList.add("card-deep");
-    titleElement.textContent = "💭 خلّنا واقعيين";
-  } else if (group === "group3") {
-    document.body.classList.add("bg-self");
-    card.classList.add("card-self");
-    titleElement.textContent = "✨ مني وإليّ";
-  }
-  
-  // Initialize points display
   updatePointsDisplay();
-
   nextQuestion();
 }
 
 function nextQuestion() {
-  // Stop any running timer first
   stopTimer();
-  
   if (currentGroup.length === 0) {
-    document.getElementById("question").innerText = "🎉 خلصت الأسئلة! أحسنتم";
-    document.getElementById("counter").innerText = "";
-    document.getElementById("turnPlayer").innerText = "";
-    updateProgress(100);
+    document.getElementById("question").innerText = "🎉 خلصت الأسئلة! مبروك للفائز.";
     return;
   }
 
   const index = Math.floor(Math.random() * currentGroup.length);
   const question = currentGroup.splice(index, 1)[0];
   
-  // Update turn display
-  const currentPlayerName = currentTurn === 1 ? player1Name : player2Name;
-  const otherPlayerName = currentTurn === 1 ? player2Name : player1Name;
-  document.getElementById("turnPlayer").innerHTML = `
-    <span style="font-size: 20px;">🎯</span> 
-    دور <strong>${otherPlayerName}</strong> يسأل <strong>${currentPlayerName}</strong>
-  `;
+  const currentPlayerName = (currentTurn === 1) ? player1Name : player2Name;
+  const otherPlayerName = (currentTurn === 1) ? player2Name : player1Name;
   
-  const questionElement = document.getElementById("question");
-  questionElement.style.opacity = "0";
+  document.getElementById("turnPlayer").innerHTML = `🎯 دور <strong>${otherPlayerName}</strong> يسأل <strong>${currentPlayerName}</strong>`;
+  document.getElementById("question").innerText = question;
   
-  setTimeout(() => {
-    questionElement.innerText = question;
-    questionElement.style.opacity = "1";
-    
-    // Start timer after question appears
-    startTimer();
-  }, 150);
-
   answeredQuestions++;
   updateProgress((answeredQuestions / totalQuestions) * 100);
-  updateCounter();
+  document.getElementById("counter").innerText = `السؤال ${answeredQuestions} من ${totalQuestions}`;
   
-  // Switch turn
-  currentTurn = currentTurn === 1 ? 2 : 1;
+  currentTurn = (currentTurn === 1) ? 2 : 1;
+  startTimer();
 }
 
-function updateProgress(percentage) {
-  const progressBar = document.getElementById("progress");
-  progressBar.style.width = percentage + "%";
-}
-
-function updateCounter() {
-  const counter = document.getElementById("counter");
-  counter.innerText = `السؤال ${answeredQuestions} من ${totalQuestions}`;
-}
-
-function resetGame() {
-  // Stop timer
-  stopTimer();
-  
-  // Reset to coin flip
-  document.getElementById("card").classList.add("hidden");
-  document.body.className = "";
-  
-  // Reset title
-  const titleElement = document.querySelector('.title');
-  titleElement.textContent = "🎴 لعبة الأسئلة";
-  
-  // Reset all values
-  currentGroup = [];
-  answeredQuestions = 0;
-  totalQuestions = 0;
-  player1Name = "";
-  player2Name = "";
-  player1Choice = "";
-  player2Choice = "";
-  currentTurn = 1;
-  winner = "";
-  
-  // Reset points
-  player1Points = 5;
-  player2Points = 5;
-  prize = "";
-  
-  // Clear inputs
-  document.getElementById('player1').value = "";
-  document.getElementById('player2').value = "";
-  document.getElementById('prizeInput').value = "";
-  
-  // Clear selections
-  document.querySelectorAll('.choice-btn').forEach(btn => {
-    btn.classList.remove('selected');
-  });
-  
-  // Hide coin animation and result
-  const coinAnimation = document.getElementById('coinAnimation');
-  const coin = coinAnimation.querySelector('.coin');
-  coinAnimation.classList.add('hidden');
-  coin.classList.remove('flipping');
-  coin.style.transform = '';
-  
-  document.getElementById('result').classList.add('hidden');
-  document.getElementById('result').innerHTML = "";
-  
-  // Remove ALL extra buttons
-  const allButtons = document.querySelectorAll('.flip-card > .flip-btn');
-  allButtons.forEach((btn, index) => {
-    if (index > 0) { // Keep only first button (the original flip button)
-      btn.remove();
-    }
-  });
-  
-  // Reset flip button
-  const flipBtn = document.getElementById('flipBtn');
-  flipBtn.disabled = true;
-  flipBtn.style.opacity = '';
-  
-  // Show coin flip screen
-  document.getElementById('coinFlip').style.display = 'block';
-  document.getElementById('groups').style.display = 'none';
-}
-
-// Timer functions
+// 4. المؤقت والرسوم
 function startTimer() {
-  if (timerRunning) return;
-  
   timeLeft = 30;
   timerRunning = true;
   document.getElementById('timerText').textContent = timeLeft;
-  document.getElementById('stopTimerBtn').disabled = false;
-  
-  const timerCircle = document.getElementById('timerCircle');
-  timerCircle.classList.remove('warning', 'danger');
-  
   timerInterval = setInterval(() => {
     timeLeft--;
     document.getElementById('timerText').textContent = timeLeft;
-    
-    // Add visual warnings
-    if (timeLeft <= 10 && timeLeft > 5) {
-      timerCircle.classList.add('warning');
-      timerCircle.classList.remove('danger');
-    } else if (timeLeft <= 5) {
-      timerCircle.classList.add('danger');
-      timerCircle.classList.remove('warning');
-    }
-    
-    // Time's up!
     if (timeLeft <= 0) {
       stopTimer();
-      handleTimeUp();
+      alert("⏰ انتهى الوقت!");
     }
   }, 1000);
 }
 
 function stopTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
+  clearInterval(timerInterval);
   timerRunning = false;
-  document.getElementById('stopTimerBtn').disabled = true;
-  
-  const timerCircle = document.getElementById('timerCircle');
-  timerCircle.classList.remove('warning', 'danger');
 }
 
-function handleTimeUp() {
-  // Deduct 1 point from current player
-  const currentPlayer = currentTurn === 1 ? 'player1' : 'player2';
-  
-  if (currentPlayer === 'player1') {
-    player1Points = Math.max(0, player1Points - 1);
-    document.getElementById('player1Points').textContent = player1Points;
-  } else {
-    player2Points = Math.max(0, player2Points - 1);
-    document.getElementById('player2Points').textContent = player2Points;
-  }
-  
-  // Show notification
-  const playerName = currentPlayer === 'player1' ? player1Name : player2Name;
-  alert(`⏰ انتهى الوقت! ${playerName} خسر نقطة واحدة`);
-  
-  checkGameEnd();
-}
-
-function passQuestion() {
-  stopTimer();
-  
-  // Deduct 2 points from current player
-  const currentPlayer = currentTurn === 1 ? 'player1' : 'player2';
-  
-  if (currentPlayer === 'player1') {
-    player1Points = Math.max(0, player1Points - 2);
-    document.getElementById('player1Points').textContent = player1Points;
-  } else {
-    player2Points = Math.max(0, player2Points - 2);
-    document.getElementById('player2Points').textContent = player2Points;
-  }
-  
-  const playerName = currentPlayer === 'player1' ? player1Name : player2Name;
-  alert(`🚫 ${playerName} امتنع عن الإجابة وخسر نقطتين`);
-  
-  checkGameEnd();
-  nextQuestion();
-}
-
-function checkGameEnd() {
-  if (player1Points <= 0) {
-    const prizeText = prize ? ` على ${prize}` : '';
-    alert(`🎉 انتهت اللعبة!\n${player2Name} فاز!\n${player1Name} يعزم${prizeText}`);
-  } else if (player2Points <= 0) {
-    const prizeText = prize ? ` على ${prize}` : '';
-    alert(`🎉 انتهت اللعبة!\n${player1Name} فاز!\n${player2Name} يعزم${prizeText}`);
-  }
+function updateProgress(percentage) {
+  document.getElementById("progress").style.width = percentage + "%";
 }
 
 function updatePointsDisplay() {
@@ -804,77 +459,18 @@ function updatePointsDisplay() {
   document.getElementById('player2Label').textContent = player2Name;
   document.getElementById('player1Points').textContent = player1Points;
   document.getElementById('player2Points').textContent = player2Points;
-  
-  const prizeText = prize ? `🎁 ${prize}` : '';
-  document.getElementById('prizeDisplay').textContent = prizeText;
+  if(prize) document.getElementById('prizeDisplay').textContent = "🎁 " + prize;
 }
 
-// Prevent pull-to-refresh on mobile
-document.body.addEventListener('touchmove', function(e) {
-  if (e.touches.length > 1) {
-    e.preventDefault();
-  }
-}, { passive: false });
-
-// Add event listeners for name inputs
-document.addEventListener('DOMContentLoaded', function() {
-  const player1Input = document.getElementById('player1');
-  const player2Input = document.getElementById('player2');
-  
-  if (player1Input) {
-    player1Input.addEventListener('input', checkFlipButton);
-  }
-  if (player2Input) {
-    player2Input.addEventListener('input', checkFlipButton);
-  }
-});
-
-// Add haptic feedback for buttons (if supported)
-if ('vibrate' in navigator) {
-  document.addEventListener('click', function(e) {
-    if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
-      navigator.vibrate(10);
-    }
-  });
+function resetGame() {
+  location.reload();
 }
 
-// ============================================
-// Setup Event Listeners on Load
-// ============================================
-function setupChoiceButtons() {
-  console.log('=== Setting up choice buttons ===');
-  
-  const choiceButtons = document.querySelectorAll('.choice-btn');
-  console.log(`Found ${choiceButtons.length} choice buttons`);
-  
-  if (choiceButtons.length === 0) {
-    console.error('❌ No choice buttons found!');
-    return;
-  }
-  
-  choiceButtons.forEach((button, index) => {
-    const player = button.getAttribute('data-player');
-    const choice = button.getAttribute('data-choice');
-    console.log(`Button ${index}: player=${player}, choice=${choice}`);
-    
-    // Remove any existing onclick
-    button.onclick = null;
-    button.removeAttribute('onclick');
-    
-    // Add click event listener
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log('=== BUTTON CLICKED ===');
-      console.log('Player:', player, 'Choice:', choice);
-      selectChoice(parseInt(player), choice);
-    }, true); // Use capture phase
-  });
-  
-  console.log('✅ Event listeners attached');
+// العداد (Visitor)
+function updateVisitorCount() {
+  let count = localStorage.getItem('visitorCount') || Math.floor(Math.random() * 500) + 100;
+  count = parseInt(count) + 1;
+  localStorage.setItem('visitorCount', count);
+  if (document.getElementById('visitorCount')) document.getElementById('visitorCount').textContent = count;
 }
-
-// Try multiple times to ensure buttons are ready
-document.addEventListener('DOMContentLoaded', setupChoiceButtons);
-window.addEventListener('load', setupChoiceButtons);
-setTimeout(setupChoiceButtons, 100);
+updateVisitorCount();
