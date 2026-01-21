@@ -291,7 +291,13 @@ button.choice-btn.selected,
 .choice-btn.selected:hover,
 button.choice-btn.selected:hover,
 .choice-btn.selected:active,
-button.choice-btn.selected:active {
+button.choice-btn.selected:active,
+.choice-btn[data-selected="true"],
+button.choice-btn[data-selected="true"],
+.choice-btn[data-selected="true"]:hover,
+button.choice-btn[data-selected="true"]:hover,
+.choice-btn[data-selected="true"]:active,
+button.choice-btn[data-selected="true"]:active {
   background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%) !important;
   border: 3px solid #6c5ce7 !important;
   color: white !important;
@@ -305,13 +311,17 @@ button.choice-btn.selected:active {
 }
 
 .choice-btn.selected .coin-emoji,
-button.choice-btn.selected .coin-emoji {
+button.choice-btn.selected .coin-emoji,
+.choice-btn[data-selected="true"] .coin-emoji,
+button.choice-btn[data-selected="true"] .coin-emoji {
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9)) !important;
   animation: selectedPulse 1.5s ease-in-out infinite;
 }
 
 .choice-btn.selected span,
-button.choice-btn.selected span {
+button.choice-btn.selected span,
+.choice-btn[data-selected="true"] span,
+button.choice-btn[data-selected="true"] span {
   color: white !important;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
 }
