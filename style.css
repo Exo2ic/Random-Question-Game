@@ -1233,3 +1233,55 @@ button.choice-btn[data-selected="true"] span {
 .tails { background: silver; transform: rotateY(180deg); }
 
 /* باقي الـ CSS الخاص بك سيعمل بشكل طبيعي مع هذه الإضافات */
+/* حل مشكلة العناصر العالقة */
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* التأكد من أن الحاوية تأخذ حجم الشاشة فقط */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    min-height: auto; /* تغيير من 100vh لتجنب السكرول الزائد */
+}
+
+/* تحسين مظهر الخلفيات التي رفعتها */
+.bg-fun {
+    background-image: url('group1_background.png') !important;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.bg-deep {
+    background-image: url('group2_background.png') !important;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.bg-self {
+    background-image: url('group3_background.png') !important;
+    background-size: cover;
+    background-attachment: fixed;
+}
+#card {
+    max-height: 90vh; /* يمنع البطاقة من الهروب خارج الشاشة */
+    overflow-y: auto; /* يسمح بالسكرول داخل البطاقة فقط إذا لزم الأمر */
+    position: relative;
+    z-index: 100;
+}
+
+body {
+    overflow-x: hidden;
+    height: 100%;
+    position: fixed; /* يمنع السكرول في الخلفية الأساسية للعناصر القديمة */
+    width: 100%;
+}
