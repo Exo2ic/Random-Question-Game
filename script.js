@@ -349,40 +349,61 @@ function updateVisitorCount() {
 updateVisitorCount();
 
 function selectChoice(player, choice) {
-  console.log(`=== selectChoice START ===`);
+  console.log(`=== selectChoice called ===`);
   console.log(`Player: ${player}, Choice: ${choice}`);
   
-  // Remove data-selected from ALL buttons of this player
+  // Get ALL choice buttons for this player
   const allPlayerButtons = document.querySelectorAll(`.choice-btn[data-player="${player}"]`);
   console.log(`Found ${allPlayerButtons.length} buttons for player ${player}`);
   
+  // Reset ALL buttons for this player to default style
   allPlayerButtons.forEach(btn => {
-    btn.removeAttribute('data-selected');
     btn.classList.remove('selected');
+    // Reset to default white background
+    btn.style.background = 'rgba(255, 255, 255, 0.9)';
+    btn.style.border = '2px solid rgba(138, 43, 226, 0.4)';
+    btn.style.color = '#2d3436';
+    btn.style.boxShadow = 'none';
+    btn.style.transform = 'none';
   });
   
-  // Add data-selected to the clicked button
-  const targetBtn = document.querySelector(`.choice-btn[data-player="${player}"][data-choice="${choice}"]`);
+  // Find the clicked button
+  const clickedButton = document.querySelector(`.choice-btn[data-player="${player}"][data-choice="${choice}"]`);
+  console.log('Clicked button:', clickedButton);
   
-  if (targetBtn) {
-    targetBtn.setAttribute('data-selected', 'true');
-    targetBtn.classList.add('selected');
-    console.log('✅ Button marked as selected');
+  if (clickedButton) {
+    // Apply selected styles directly with inline CSS
+    clickedButton.classList.add('selected');
+    clickedButton.style.background = 'linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%)';
+    clickedButton.style.border = '3px solid #6c5ce7';
+    clickedButton.style.color = 'white';
+    clickedButton.style.boxShadow = '0 6px 20px rgba(108, 92, 231, 0.5), 0 0 0 4px rgba(108, 92, 231, 0.4)';
+    clickedButton.style.transform = 'scale(1.05)';
+    
+    // Make text white too
+    const textSpans = clickedButton.querySelectorAll('span');
+    textSpans.forEach(span => {
+      span.style.color = 'white';
+    });
+    
+    console.log('✅ Styles applied successfully');
   } else {
     console.error('❌ Button not found!');
   }
   
   // Store choice
-  if (player === 1) {
+  if (player === 1 || player === '1') {
     player1Choice = choice;
+    console.log('Player 1 choice:', player1Choice);
   } else {
     player2Choice = choice;
+    console.log('Player 2 choice:', player2Choice);
   }
   
-  console.log(`State: P1="${player1Choice}", P2="${player2Choice}"`);
+  console.log(`Current state - P1: "${player1Choice}", P2: "${player2Choice}"`);
   checkFlipButton();
-  console.log(`=== END ===\n`);
 }
+
 
 function checkFlipButton() {
   player1Name = document.getElementById('player1').value.trim();
@@ -820,32 +841,40 @@ if ('vibrate' in navigator) {
 // ============================================
 // Setup Event Listeners on Load
 // ============================================
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('=== DOM Loaded - Setting up buttons ===');
+function setupChoiceButtons() {
+  console.log('=== Setting up choice buttons ===');
   
-  // Remove onclick handlers and use proper event listeners
   const choiceButtons = document.querySelectorAll('.choice-btn');
   console.log(`Found ${choiceButtons.length} choice buttons`);
+  
+  if (choiceButtons.length === 0) {
+    console.error('❌ No choice buttons found!');
+    return;
+  }
   
   choiceButtons.forEach((button, index) => {
     const player = button.getAttribute('data-player');
     const choice = button.getAttribute('data-choice');
     console.log(`Button ${index}: player=${player}, choice=${choice}`);
     
-    // Remove old onclick
+    // Remove any existing onclick
+    button.onclick = null;
     button.removeAttribute('onclick');
     
-    // Add new event listener
+    // Add click event listener
     button.addEventListener('click', function(e) {
       e.preventDefault();
       e.stopPropagation();
       console.log('=== BUTTON CLICKED ===');
-      console.log('Button:', this);
       console.log('Player:', player, 'Choice:', choice);
-      selectChoice(player, choice);
-    });
+      selectChoice(parseInt(player), choice);
+    }, true); // Use capture phase
   });
   
-  console.log('=== Event listeners attached ===');
-});
+  console.log('✅ Event listeners attached');
+}
 
+// Try multiple times to ensure buttons are ready
+document.addEventListener('DOMContentLoaded', setupChoiceButtons);
+window.addEventListener('load', setupChoiceButtons);
+setTimeout(setupChoiceButtons, 100);
